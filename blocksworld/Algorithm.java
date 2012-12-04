@@ -36,7 +36,7 @@ public class Algorithm {
                 
             // If c is a condition not fully instanced
             }else if((c instanceof Predicate) && !((Predicate)c).isInstanced()){
-                ((Predicate)c).setValues(state);
+                instanceCondition((Predicate)c);
                 stack.add(c);
                 
             // If c is a condition fully instanced
@@ -56,6 +56,11 @@ public class Algorithm {
                 }
             }
         }
+    }
+    
+    private void instanceCondition(State state, Predicate pred){
+        pred.setValues(state);
+        // TODO: Propagate through stack
     }
     
     private void clear(){
