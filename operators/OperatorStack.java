@@ -86,6 +86,6 @@ public class OperatorStack extends Operator {
     public String toString(){
         Block a = this.pres.get(0).getA();
         Block b = this.pres.get(1).getA();
-        return "unstack(" + a.getName() + ", " + b.getName() + ")";
+        return "stack(" + a.getName() + ", " + b.getName() + ")";
     }
 }
