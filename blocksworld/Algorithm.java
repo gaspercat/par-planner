@@ -49,9 +49,8 @@ public class Algorithm {
                 }
                 
             // If c is a list of conditions
-            }else if(c instanceof Operator.Preconditions){
-                ArrayList<Predicate> conds = ((Operator.Preconditions)c).getPredicates();
-                ArrayList<Predicate> unmet = state.getUnmetConditions(conds);
+            }else if(c instanceof Preconditions){
+                ArrayList<Predicate> unmet = state.getUnmetConditions((Preconditions)c);
                 if(unmet.size() > 0){
                     stack.add(c);
                     stack.add(unmet);
