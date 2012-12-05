@@ -2,6 +2,7 @@ package blocksworld;
 
 import java.util.ArrayList;
 import predicates.Predicate;
+import predicates.PredicateFreeStack;
 import operators.Operator;
 
 public class State {
@@ -40,9 +41,15 @@ public class State {
     }
     
     public boolean hasPredicate(Predicate p){
+        int nStacks = 0;
+        
         for(Predicate pred: this.preds){
             if(pred.equals(p)) return true;
+            if(pred.getType() == Predicate.ON_TABLE) nStacks++;
         }
+        
+        // Check FreeStack predicate if less than three stacks
+        if(nStacks < 3) return p instanceof PredicateFreeStack;
         
         return false;
     }
@@ -50,16 +57,9 @@ public class State {
     public ArrayList<Predicate> getUnmetConditions(Preconditions conds){
         ArrayList<Predicate> ret = new ArrayList<Predicate>();
         
-        for(Predicate predA: conds.getPredicates()){
+        for(Predicate pred: conds.getPredicates()){
             boolean found = false;
-            for(Predicate predB: this.preds){
-                if(predA.equals(predB)){
-                    found = true;
-                    break;
-                }
-            }
-            
-            if(!found) ret.add(predA);
+            if(!hasPredicate(pred)) ret.add(pred);
         }
         
         return ret;

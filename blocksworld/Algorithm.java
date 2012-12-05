@@ -46,7 +46,9 @@ public class Algorithm {
             }else if((c instanceof Predicate) && ((Predicate)c).isInstanced()){
                 Predicate pred = (Predicate)c;
                 if(!this.state.hasPredicate(pred)){
-                    // TODO: Add operator + Preconditions block
+                    Operator op = heuristicSelectOperator(pred);
+                    this.stack.add(op);
+                    this.stack.add(op.getPreconditions());
                 }
                 
             // If c is a list of conditions
@@ -99,6 +101,10 @@ public class Algorithm {
         
         // Define value at operator
         op.instanceValues(pred, this.state);
+    }
+    
+    private Operator heuristicSelectOperator(Predicate pred){
+        
     }
     
     private void clear(){

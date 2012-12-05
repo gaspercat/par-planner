@@ -14,7 +14,8 @@ public abstract class Predicate {
     public static final int FREE_ARM = 4;
     public static final int PICKED_UP = 5;
     public static final int USED_COLS_NUM = 6;
-    public static final int HEAVIER = 7;   
+    public static final int HEAVIER = 7;
+    public static final int FREE_STACK = 8;
     
     protected int type;
     protected boolean is_valid;
