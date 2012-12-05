@@ -15,10 +15,10 @@ public class PredicateOn extends Predicate{
     private Block paramA;
     private Block paramB;
     
-    public PredicateOn(Block A, Block B){
+    public PredicateOn(Block a, Block b){
         super(Predicate.ON);
-        this.paramA = A;
-        this.paramB = B;
+        this.paramA = a;
+        this.paramB = b;
     }
     
     protected PredicateOn(ArrayList<Object> params){
@@ -57,6 +57,24 @@ public class PredicateOn extends Predicate{
     @Override
     public boolean isInstanced(){
         return (this.paramA != null) && (this.paramB != null);
+    }
+    
+    public boolean isInstancedA(){
+        return (this.paramA != null);
+    }
+    
+    public boolean isInstancedB(){
+        return (this.paramB != null);
+    }
+    
+    @Override
+    public void setA(Block a){
+        this.paramA = a;
+    }
+    
+    @Override
+    public void setB(Block b){
+        this.paramB = b;
     }
     
     @Override

@@ -61,8 +61,17 @@ public class Algorithm {
     }
     
     private void instanceCondition(State state, Predicate pred){
-        pred.setValues(state);
-        // TODO: Propagate through stack
+        // Get related operator
+        Operator op = null;
+        for(int i=stack.size()-1;;i--){
+            if(stack.get(i) instanceof Operator){
+                op = (Operator)stack.get(i);
+                break;
+            }
+        }
+        
+        // Define value at operator
+        op.instanceValues(pred, state);
     }
     
     private void clear(){

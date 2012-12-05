@@ -15,10 +15,10 @@ public class PredicateHeavier extends Predicate{
     private Block paramA;
     private Block paramB;
     
-    public PredicateHeavier(Block A, Block B){
+    public PredicateHeavier(Block a, Block b){
         super(Predicate.HEAVIER);
-        this.paramA = A;
-        this.paramB = B;
+        this.paramA = a;
+        this.paramB = b;
     }
     
     protected PredicateHeavier(ArrayList<Object> params){
@@ -60,6 +60,24 @@ public class PredicateHeavier extends Predicate{
     @Override
     public boolean isInstanced(){
         return (this.paramA != null) && (this.paramB != null);
+    }
+    
+    public boolean isInstancedA(){
+        return (this.paramA != null);
+    }
+    
+    public boolean isInstancedB(){
+        return (this.paramB != null);
+    }
+    
+    @Override
+    public void setA(Block a){
+        this.paramA = a;
+    }
+    
+    @Override
+    public void setB(Block b){
+        this.paramB = b;
     }
    
     @Override

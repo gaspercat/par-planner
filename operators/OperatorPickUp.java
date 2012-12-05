@@ -6,6 +6,7 @@ package operators;
 
 import java.util.ArrayList;
 import blocksworld.Block;
+import blocksworld.State;
 import predicates.PredicateUsedColsNum;
 import predicates.*;
 
@@ -31,5 +32,25 @@ public class OperatorPickUp extends Operator {
         // Add additions
         add.add(new PredicatePickedUp(a));
         add.add(new PredicateUsedColsNum(PredicateUsedColsNum.N_DECREASED));
+    }
+    
+    @Override
+    public void instanceValues(Predicate pred, State state){
+        instanceA(state);
+    }
+    
+    private void instanceA(State state){
+        Block val = null;
+        
+        // TODO: Select value
+        
+        // Give value to predicates
+        // *******************************
+        
+        ArrayList<Predicate> preds = preconds.getPredicates();
+        preds.get(1).setA(val);
+        preds.get(3).setA(val);
+        remove.get(0).setA(val);
+        add.get(0).setA(val);
     }
 }

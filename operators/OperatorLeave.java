@@ -6,6 +6,7 @@ package operators;
 
 import java.util.ArrayList;
 import blocksworld.Block;
+import blocksworld.State;
 import predicates.PredicateUsedColsNum;
 import predicates.*;
 
@@ -29,5 +30,25 @@ public class OperatorLeave extends Operator {
         add.add(new PredicateOnTable(a));
         add.add(new PredicateUsedColsNum(PredicateUsedColsNum.N_INCREASED));
         add.add(new PredicateFreeArm());
+    }
+    
+    @Override
+    public void instanceValues(Predicate pred, State state){
+        instanceA(state);
+    }
+    
+    private void instanceA(State state){
+        Block val = null;
+        
+        // TODO: Select value
+        // *******************************
+        
+        // Give value to predicates
+        // *******************************
+        
+        ArrayList<Predicate> preds = preconds.getPredicates();
+        preds.get(0).setA(val);
+        remove.get(0).setA(val);
+        add.get(0).setA(val);
     }
 }

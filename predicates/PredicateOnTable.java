@@ -14,9 +14,9 @@ import java.util.ArrayList;
 public class PredicateOnTable extends Predicate{
     private Block paramA;
     
-    public PredicateOnTable(Block A){
+    public PredicateOnTable(Block a){
         super(Predicate.ON_TABLE);
-        this.paramA = A;
+        this.paramA = a;
     }
     
     protected PredicateOnTable(ArrayList<Object> params){
@@ -50,6 +50,11 @@ public class PredicateOnTable extends Predicate{
     @Override
     public boolean isInstanced(){
         return this.paramA != null;
+    }
+    
+    @Override
+    public void setA(Block a){
+        this.paramA = a;
     }
     
     @Override

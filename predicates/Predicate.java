@@ -70,6 +70,24 @@ public abstract class Predicate {
         return this.is_valid;
     }
     
+    // * ** SETTER STUB METHODS
+    // * ******************************************
+    
+    public void setA(Block a){
+        // STUB! Just for generalization purposes
+    }
+    
+    public void setB(Block b){
+        // STUB! Just for generalization purposes
+    }
+    
+    public void setN(int n){
+        // STUB! Just for generalization purposes
+    }
+    
+    // * ** ABSTRACT METHODS
+    // * ******************************************
+    
     public abstract boolean isInstanced();
     public abstract String getTypeName();
     public abstract boolean equals(Predicate pred);

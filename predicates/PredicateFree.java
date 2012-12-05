@@ -14,9 +14,9 @@ import java.util.ArrayList;
 public class PredicateFree extends Predicate{
     private Block paramA;
     
-    public PredicateFree(Block A){
+    public PredicateFree(Block a){
         super(Predicate.FREE);
-        this.paramA = A;
+        this.paramA = a;
     }
     
     protected PredicateFree(ArrayList<Object> params){
@@ -50,6 +50,11 @@ public class PredicateFree extends Predicate{
     @Override
     public boolean isInstanced(){
         return this.paramA != null;
+    }
+    
+    @Override
+    public void setA(Block a){
+        this.paramA = a;
     }
     
     @Override

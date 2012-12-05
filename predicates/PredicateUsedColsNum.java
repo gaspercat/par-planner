@@ -61,6 +61,11 @@ public class PredicateUsedColsNum extends Predicate{
     }
     
     @Override
+    public void setN(int n){
+        this.paramN = n;
+    }
+    
+    @Override
     public boolean equals(Predicate pred){
         if(!(pred instanceof PredicateUsedColsNum)) return false;
         

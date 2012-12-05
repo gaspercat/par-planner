@@ -14,9 +14,9 @@ import java.util.ArrayList;
 public class PredicatePickedUp extends Predicate{
     private Block paramA;
     
-    public PredicatePickedUp(Block A){
+    public PredicatePickedUp(Block a){
         super(Predicate.PICKED_UP);
-        this.paramA = A;
+        this.paramA = a;
     }
     
     protected PredicatePickedUp(ArrayList<Object> params){
@@ -50,6 +50,11 @@ public class PredicatePickedUp extends Predicate{
     @Override
     public boolean isInstanced(){
         return this.paramA != null;
+    }
+    
+    @Override
+    public void setA(Block a){
+        this.paramA = a;
     }
     
     @Override

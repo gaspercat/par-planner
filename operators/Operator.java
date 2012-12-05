@@ -49,4 +49,9 @@ public abstract class Operator {
     public void apply(State s){
         
     }
+    
+    // * ** ABSTRACT METHODS
+    // * ******************************************
+    
+    public abstract void instanceValues(Predicate pred, State state);
 }
