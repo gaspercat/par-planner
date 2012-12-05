@@ -1,6 +1,8 @@
 package blocksworld;
 
 import java.util.ArrayList;
+import predicates.Predicate;
+import operators.Operator;
 
 public class State {
     private ArrayList<Predicate> preds;

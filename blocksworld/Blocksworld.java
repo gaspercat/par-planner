@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.regex.Pattern;
 
 import java.util.regex.Matcher;
+import predicates.Predicate;
 
 public class Blocksworld {
     private static ArrayList<Block> blocks;
@@ -125,7 +126,7 @@ public class Blocksworld {
             }
         }
         
-        Predicate ret = new Predicate(predicate, params);
+        Predicate ret = Predicate.create(predicate, params);
         return (ret.isValid()) ? ret : null;
     }
     

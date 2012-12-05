@@ -22,7 +22,7 @@ public abstract class Predicate {
     // * ** FACTORY
     // * ******************************************
     
-    public Predicate create(String pred, ArrayList<Object> params){
+    public static Predicate create(String pred, ArrayList<Object> params){
         Predicate ret = null;
         
         if(pred.equals("on-table")){

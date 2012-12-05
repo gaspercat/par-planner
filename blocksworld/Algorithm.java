@@ -5,6 +5,8 @@
 package blocksworld;
 
 import java.util.ArrayList;
+import operators.Operator;
+import predicates.Predicate;
 
 /**
  *
@@ -36,7 +38,7 @@ public class Algorithm {
                 
             // If c is a condition not fully instanced
             }else if((c instanceof Predicate) && !((Predicate)c).isInstanced()){
-                instanceCondition((Predicate)c);
+                instanceCondition(state, (Predicate)c);
                 stack.add(c);
                 
             // If c is a condition fully instanced
