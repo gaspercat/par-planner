@@ -40,7 +40,13 @@ public class OperatorPickUp extends Operator {
     
     @Override
     public void instanceValues(Predicate pred, State state){
-        instanceA(state);
+        if(pred instanceof PredicateOnTable){
+            instanceA(state);
+        }else if(pred instanceof PredicateFree){
+            instanceA(state);
+        }else if(pred instanceof PredicateUsedColsNum){
+            instanceN(state);
+        }
     }
     
     private void instanceA(State state){
@@ -55,6 +61,19 @@ public class OperatorPickUp extends Operator {
         pres.get(3).setA(val);
         rmvs.get(0).setA(val);
         adds.get(0).setA(val);
+    }
+    
+    private void instanceN(State state){
+        int val = 0;
+        
+        // TODO: Select value
+        
+        // Give value to predicates
+        // *******************************
+        
+        pres.get(0).setN(val);
+        rmvs.get(2).setN(val);
+        adds.get(1).setN(val-1);
     }
     
     @Override
