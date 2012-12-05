@@ -70,44 +70,19 @@ public abstract class Predicate {
         return this.is_valid;
     }
     
-    // * ** SETTER STUB METHODS
-    // * ******************************************
-    
-    public Block getA(){
-        // STUB! Just for generalization purposes
-        return null;
-    }
-    
-    public Block getB(){
-        // STUB! Just for generalization purposes
-        return null;
-    }
-    
-    public int getN(){
-        // STUB! Just for generalization purposes
-        return -5;
-    }
-    
-    // * ** SETTER STUB METHODS
-    // * ******************************************
-    
-    public void setA(Block a){
-        // STUB! Just for generalization purposes
-    }
-    
-    public void setB(Block b){
-        // STUB! Just for generalization purposes
-    }
-    
-    public void setN(int n){
-        // STUB! Just for generalization purposes
-    }
-    
     // * ** ABSTRACT METHODS
     // * ******************************************
     
     public abstract boolean isInstanced();
     public abstract String getTypeName();
+    public abstract Block getA();
+    public abstract Block getB();
+    public abstract int getN();
+    
+    public abstract void setA(Block a);
+    public abstract void setB(Block b);
+    public abstract void setN(int n);
+    
     public abstract boolean equals(Predicate pred);
     public abstract Predicate clone();
 }

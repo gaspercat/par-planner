@@ -35,8 +35,38 @@ public class PredicateFreeArm extends Predicate{
     }
     
     @Override
+    public Block getA(){
+        return null;
+    }
+    
+    @Override
+    public Block getB(){
+        return null;
+    }
+    
+    @Override
+    public int getN(){
+        return -5;
+    }
+    
+    @Override
     public boolean isInstanced(){
         return true;
+    }
+    
+    @Override
+    public void setA(Block a){
+        // STUB!!! Just for generalization purposes!
+    }
+    
+    @Override
+    public void setB(Block b){
+        // STUB!!! Just for generalization purposes!
+    }
+    
+    @Override
+    public void setN(int n){
+        // STUB!!! Just for generalization purposes!
     }
     
     @Override

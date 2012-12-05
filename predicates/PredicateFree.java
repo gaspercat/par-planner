@@ -53,6 +53,16 @@ public class PredicateFree extends Predicate{
     }
     
     @Override
+    public Block getB(){
+        return null;
+    }
+    
+    @Override
+    public int getN(){
+        return -5;
+    }
+    
+    @Override
     public boolean isInstanced(){
         return this.paramA != null;
     }
@@ -60,6 +70,16 @@ public class PredicateFree extends Predicate{
     @Override
     public void setA(Block a){
         this.paramA = a;
+    }
+    
+    @Override
+    public void setB(Block b){
+        // STUB!!! Just for generalization purposes!
+    }
+    
+    @Override
+    public void setN(int n){
+        // STUB!!! Just for generalization purposes!
     }
     
     @Override

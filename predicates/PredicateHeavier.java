@@ -68,6 +68,11 @@ public class PredicateHeavier extends Predicate{
     }
     
     @Override
+    public int getN(){
+        return -5;
+    }
+    
+    @Override
     public boolean isInstanced(){
         return (this.paramA != null) && (this.paramB != null);
     }
@@ -88,6 +93,11 @@ public class PredicateHeavier extends Predicate{
     @Override
     public void setB(Block b){
         this.paramB = b;
+    }
+    
+    @Override
+    public void setN(int n){
+        // STUB!!! Just for generalization purposes!
     }
    
     @Override

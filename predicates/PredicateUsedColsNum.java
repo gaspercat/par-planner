@@ -56,6 +56,16 @@ public class PredicateUsedColsNum extends Predicate{
     }
     
     @Override
+    public Block getA(){
+        return null;
+    }
+    
+    @Override
+    public Block getB(){
+        return null;
+    }
+    
+    @Override
     public int getN(){
         return this.paramN;
     }
@@ -63,6 +73,16 @@ public class PredicateUsedColsNum extends Predicate{
     @Override
     public boolean isInstanced(){
         return this.paramN > 0;
+    }
+    
+    @Override
+    public void setA(Block a){
+        // STUB!!! Just for generalization purposes!
+    }
+    
+    @Override
+    public void setB(Block b){
+        // STUB!!! Just for generalization purposes!
     }
     
     @Override
