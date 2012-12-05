@@ -25,10 +25,10 @@ public class State {
     
     // Copy constructor
     public State(State s){
-        preds = new ArrayList<Predicate>();
+        this.preds = new ArrayList<Predicate>();
         
         for(Predicate pred: s.preds){
-            preds.add(pred.clone());
+            this.preds.add(pred.clone());
         }
     }
     
@@ -40,11 +40,29 @@ public class State {
     }
     
     public boolean hasPredicate(Predicate p){
-        for(Predicate pred: preds){
+        for(Predicate pred: this.preds){
             if(pred.equals(p)) return true;
         }
         
         return false;
+    }
+    
+    public ArrayList<Predicate> getUnmetConditions(Preconditions conds){
+        ArrayList<Predicate> ret = new ArrayList<Predicate>();
+        
+        for(Predicate predA: conds.getPredicates()){
+            boolean found = false;
+            for(Predicate predB: this.preds){
+                if(predA.equals(predB)){
+                    found = true;
+                    break;
+                }
+            }
+            
+            if(!found) ret.add(predA);
+        }
+        
+        return ret;
     }
     
     // * ** SETTER METHODS
