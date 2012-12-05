@@ -53,7 +53,7 @@ public class Algorithm {
                 ArrayList<Predicate> unmet = state.getUnmetConditions((Preconditions)c);
                 if(unmet.size() > 0){
                     stack.add(c);
-                    stack.add(unmet);
+                    stack.addAll(unmet);
                 }
             }
         }
