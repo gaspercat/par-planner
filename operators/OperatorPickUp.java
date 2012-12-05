@@ -19,19 +19,19 @@ public class OperatorPickUp extends Operator {
         super(Operator.PICK_UP);
         
         // Add preconditions
-        preconds.addPredicate(new PredicateUsedColsNum(PredicateUsedColsNum.N_UNDEFINED));
-        preconds.addPredicate(new PredicateOnTable(a));
-        preconds.addPredicate(new PredicateFreeArm());
-        preconds.addPredicate(new PredicateFree(a));
+        pres.add(new PredicateUsedColsNum(PredicateUsedColsNum.N_UNDEFINED));
+        pres.add(new PredicateOnTable(a));
+        pres.add(new PredicateFreeArm());
+        pres.add(new PredicateFree(a));
         
         // Add deletions
-        remove.add(new PredicateOnTable(a));
-        remove.add(new PredicateFreeArm());
-        remove.add(new PredicateUsedColsNum(PredicateUsedColsNum.N_UNDEFINED));
+        rmvs.add(new PredicateOnTable(a));
+        rmvs.add(new PredicateFreeArm());
+        rmvs.add(new PredicateUsedColsNum(PredicateUsedColsNum.N_UNDEFINED));
         
         // Add additions
-        add.add(new PredicatePickedUp(a));
-        add.add(new PredicateUsedColsNum(PredicateUsedColsNum.N_DECREASED));
+        adds.add(new PredicatePickedUp(a));
+        adds.add(new PredicateUsedColsNum(PredicateUsedColsNum.N_DECREASED));
     }
     
     @Override
@@ -47,10 +47,9 @@ public class OperatorPickUp extends Operator {
         // Give value to predicates
         // *******************************
         
-        ArrayList<Predicate> preds = preconds.getPredicates();
-        preds.get(1).setA(val);
-        preds.get(3).setA(val);
-        remove.get(0).setA(val);
-        add.get(0).setA(val);
+        pres.get(1).setA(val);
+        pres.get(3).setA(val);
+        rmvs.get(0).setA(val);
+        adds.get(0).setA(val);
     }
 }

@@ -4,8 +4,10 @@
  */
 package operators;
 
-import blocksworld.*;
 import java.util.ArrayList;
+
+import blocksworld.Preconditions;
+import blocksworld.State;
 import predicates.Predicate;
 
 /**
@@ -18,29 +20,20 @@ public abstract class Operator {
     public static final int UNSTACK = 3;
     public static final int STACK = 4;
     
-    public class Preconditions {
-        ArrayList<Predicate> preconds;
-        
-        public Preconditions(){
-            preconds = new ArrayList<Predicate>();
-        }
-        
-        public void addPredicate(Predicate pred){
-            preconds.add(pred);
-        }
-        
-        public ArrayList<Predicate> getPredicates(){
-            return preconds;
-        }
-    }
-    
     protected int type;
-    protected Preconditions preconds;
-    protected ArrayList<Predicate> remove;
-    protected ArrayList<Predicate> add;
+    protected ArrayList<Predicate> pres;
+    protected ArrayList<Predicate> rmvs;
+    protected ArrayList<Predicate> adds;
     
     protected Operator(int type){
         this.type = type;
+    }
+
+    // * ** GETTE METHODS
+    // * ******************************************
+    
+    public Preconditions getPreconditions(){
+        return new Preconditions(this.pres);
     }
     
     // * ** OPERATORS

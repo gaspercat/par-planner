@@ -19,17 +19,17 @@ public class OperatorLeave extends Operator {
         super(Operator.LEAVE);
         
         // Add preconditions
-        preconds.addPredicate(new PredicatePickedUp(a));
-        preconds.addPredicate(new PredicateUsedColsNum(PredicateUsedColsNum.N_UNDEFINED));
+        pres.add(new PredicatePickedUp(a));
+        pres.add(new PredicateUsedColsNum(PredicateUsedColsNum.N_UNDEFINED));
         
         // Add deletions
-        remove.add(new PredicatePickedUp(a));
-        remove.add(new PredicateUsedColsNum(PredicateUsedColsNum.N_UNDEFINED));
+        rmvs.add(new PredicatePickedUp(a));
+        rmvs.add(new PredicateUsedColsNum(PredicateUsedColsNum.N_UNDEFINED));
         
         // Add additions
-        add.add(new PredicateOnTable(a));
-        add.add(new PredicateUsedColsNum(PredicateUsedColsNum.N_INCREASED));
-        add.add(new PredicateFreeArm());
+        adds.add(new PredicateOnTable(a));
+        adds.add(new PredicateUsedColsNum(PredicateUsedColsNum.N_INCREASED));
+        adds.add(new PredicateFreeArm());
     }
     
     @Override
@@ -46,9 +46,8 @@ public class OperatorLeave extends Operator {
         // Give value to predicates
         // *******************************
         
-        ArrayList<Predicate> preds = preconds.getPredicates();
-        preds.get(0).setA(val);
-        remove.get(0).setA(val);
-        add.get(0).setA(val);
+        pres.get(0).setA(val);
+        rmvs.get(0).setA(val);
+        adds.get(0).setA(val);
     }
 }

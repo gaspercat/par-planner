@@ -19,17 +19,17 @@ public class OperatorStack extends Operator {
         super(Operator.STACK);
 
         // Add preconditions
-        preconds.addPredicate(new PredicatePickedUp(a));
-        preconds.addPredicate(new PredicateFree(b));
-        preconds.addPredicate(new PredicateHeavier(b, a));
+        pres.add(new PredicatePickedUp(a));
+        pres.add(new PredicateFree(b));
+        pres.add(new PredicateHeavier(b, a));
         
         // Add deletions
-        remove.add(new PredicatePickedUp(a));
-        remove.add(new PredicateFree(b));
+        rmvs.add(new PredicatePickedUp(a));
+        rmvs.add(new PredicateFree(b));
         
         // Add additions
-        add.add(new PredicateOn(a, b));
-        add.add(new PredicateFreeArm());
+        adds.add(new PredicateOn(a, b));
+        adds.add(new PredicateFreeArm());
     }
     
     @Override
@@ -53,11 +53,10 @@ public class OperatorStack extends Operator {
         // Give value to predicates
         // *******************************
         
-        ArrayList<Predicate> preds = preconds.getPredicates();
-        preds.get(0).setA(val);
-        preds.get(2).setB(val);
-        remove.get(0).setA(val);
-        add.get(0).setA(val);
+        pres.get(0).setA(val);
+        pres.get(2).setB(val);
+        rmvs.get(0).setA(val);
+        adds.get(0).setA(val);
     }
     
     private void instanceB(State state){
@@ -68,9 +67,8 @@ public class OperatorStack extends Operator {
         // Give value to predicates
         // *******************************
         
-        ArrayList<Predicate> preds = preconds.getPredicates();
-        preds.get(1).setA(val);
-        preds.get(2).setA(val);
-        remove.get(1).setA(val);
+        pres.get(1).setA(val);
+        pres.get(2).setA(val);
+        rmvs.get(1).setA(val);
     }
 }
