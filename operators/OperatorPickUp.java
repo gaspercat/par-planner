@@ -62,4 +62,10 @@ public class OperatorPickUp extends Operator {
         OperatorPickUp ret = new OperatorPickUp(this); 
         return ret;
     }
+    
+    @Override
+    public String toString(){
+        Block a = this.pres.get(1).getA();
+        return "pick-up(" + a.getName() + ")";
+    }
 }

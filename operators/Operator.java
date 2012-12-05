@@ -81,4 +81,7 @@ public abstract class Operator {
     
     public abstract void instanceValues(Predicate pred, State state);
     public abstract Operator clone();
+    
+    @Override
+    public abstract String toString();
 }

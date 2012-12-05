@@ -80,4 +80,11 @@ public class OperatorUnstack extends Operator {
         OperatorUnstack ret = new OperatorUnstack(this); 
         return ret;
     }
+    
+    @Override
+    public String toString(){
+        Block a = this.pres.get(0).getA();
+        Block b = this.pres.get(0).getB();
+        return "unstack(" + a.getName() + ", " + b.getName() + ")";
+    }
 }

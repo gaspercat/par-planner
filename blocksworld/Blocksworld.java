@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.regex.Pattern;
 
 import java.util.regex.Matcher;
+import operators.Operator;
 import predicates.Predicate;
 
 public class Blocksworld {
@@ -43,6 +44,12 @@ public class Blocksworld {
     private static void execute(State initial, State goal){
         Algorithm alg = new Algorithm();
         alg.run(initial, goal);
+        
+        // Show result
+        ArrayList<Operator> plan = alg.getPlan();
+        for(Operator op: plan){
+            System.out.println(plan.toString());
+        }
     }
     
     // * ** INITIAL STATE FILE LOADER

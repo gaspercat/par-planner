@@ -60,4 +60,10 @@ public class OperatorLeave extends Operator {
         OperatorLeave ret = new OperatorLeave(this); 
         return ret;
     }
+    
+    @Override
+    public String toString(){
+        Block a = this.pres.get(0).getA();
+        return "leave(" + a.getName() + ")";
+    }
 }
