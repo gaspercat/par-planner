@@ -28,6 +28,25 @@ public abstract class Operator {
     protected Operator(int type){
         this.type = type;
     }
+    
+    protected Operator(Operator op){
+        this.type = op.type;
+        
+        this.pres = new ArrayList<Predicate>();
+        for(Predicate p: op.pres){
+            this.pres.add(p.clone());
+        }
+        
+        this.rmvs = new ArrayList<Predicate>();
+        for(Predicate p: op.rmvs){
+            this.rmvs.add(p.clone());
+        }
+        
+        this.adds = new ArrayList<Predicate>();
+        for(Predicate p: op.adds){
+            this.adds.add(p.clone());
+        }
+    }
 
     // * ** GETTER METHODS
     // * ******************************************
@@ -61,4 +80,5 @@ public abstract class Operator {
     // * ******************************************
     
     public abstract void instanceValues(Predicate pred, State state);
+    public abstract Operator clone();
 }

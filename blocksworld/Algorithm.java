@@ -13,50 +13,60 @@ import predicates.Predicate;
  * @author gaspercat
  */
 public class Algorithm {
-    private ArrayList<State> states;
+    private ArrayList<Operator> plan;
+    private State state;
     private ArrayList<Object> stack;
     
     public Algorithm(){
-        this.states = new ArrayList<State>();
+        this.plan = new ArrayList<Operator>();
         this.stack = new ArrayList<Object>();
     }
             
     public void run(State initial, State goal){
-        State state = initial;
-        ArrayList<Operator> plan = new ArrayList<Operator>();
+        this.state = initial;
         
-        stack.add(goal);
-        stack.add(goal.getPredicates());
+        this.stack.add(goal);
+        this.stack.add(goal.getPredicates());
         
-        while(stack.size() > 0){
-            Object c = stack.remove(stack.size()-1);
+        while(this.stack.size() > 0){
+            Object c = this.stack.remove(this.stack.size()-1);
             
             // If c is an operator
             if(c instanceof Operator){
-                plan.add((Operator)c);
-                state = new State(state, (Operator)c);
+                this.plan.add((Operator)c);
+                this.state = new State(this.state, (Operator)c);
                 
             // If c is a condition not fully instanced
             }else if((c instanceof Predicate) && !((Predicate)c).isInstanced()){
-                instanceCondition(state, (Predicate)c);
-                stack.add(c);
+                instanceCondition((Predicate)c);
+                this.stack.add(c);
                 
             // If c is a condition fully instanced
             }else if((c instanceof Predicate) && ((Predicate)c).isInstanced()){
                 Predicate pred = (Predicate)c;
-                if(!state.hasPredicate(pred)){
-                    // TODO
+                if(!this.state.hasPredicate(pred)){
+                    // TODO: Add operator + Preconditions block
                 }
                 
             // If c is a list of conditions
             }else if(c instanceof Preconditions){
                 ArrayList<Predicate> unmet = state.getUnmetConditions((Preconditions)c);
                 if(unmet.size() > 0){
-                    stack.add(c);
-                    stack.addAll(sortConditions(unmet));
+                    this.stack.add(c);
+                    this.stack.addAll(sortConditions(unmet));
                 }
             }
         }
+    }
+    
+    public ArrayList<Operator> getPlan(){
+        ArrayList<Operator> ret = new ArrayList<Operator>();
+        
+        for(int i=0;i<this.plan.size();i++){
+            ret.add(this.plan.get(i).clone());
+        }
+        
+        return ret;
     }
     
     private ArrayList<Predicate> sortConditions(ArrayList<Predicate> conditions){
@@ -66,22 +76,22 @@ public class Algorithm {
         // IMPORTANT!! UsedColsNum must always be first! (bottom of stack)
     }
     
-    private void instanceCondition(State state, Predicate pred){
+    private void instanceCondition(Predicate pred){
         // Get related operator
         Operator op = null;
-        for(int i=stack.size()-1;;i--){
-            if(stack.get(i) instanceof Operator){
-                op = (Operator)stack.get(i);
+        for(int i=this.stack.size()-1;;i--){
+            if(this.stack.get(i) instanceof Operator){
+                op = (Operator)this.stack.get(i);
                 break;
             }
         }
         
         // Define value at operator
-        op.instanceValues(pred, state);
+        op.instanceValues(pred, this.state);
     }
     
     private void clear(){
-        this.states.clear();
+        this.plan.clear();
         this.stack.clear();
     }
 }

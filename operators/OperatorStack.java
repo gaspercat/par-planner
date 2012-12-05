@@ -32,6 +32,10 @@ public class OperatorStack extends Operator {
         adds.add(new PredicateFreeArm());
     }
     
+    public OperatorStack(OperatorStack op){
+        super(op);
+    }
+    
     @Override
     public void instanceValues(Predicate pred, State state){
         if(pred instanceof PredicatePickedUp){
@@ -70,5 +74,11 @@ public class OperatorStack extends Operator {
         pres.get(1).setA(val);
         pres.get(2).setA(val);
         rmvs.get(1).setA(val);
+    }
+    
+    @Override
+    public Operator clone(){
+        OperatorStack ret = new OperatorStack(this); 
+        return ret;
     }
 }

@@ -32,6 +32,10 @@ public class OperatorLeave extends Operator {
         adds.add(new PredicateFreeArm());
     }
     
+    public OperatorLeave(OperatorLeave op){
+        super(op);
+    }
+    
     @Override
     public void instanceValues(Predicate pred, State state){
         instanceA(state);
@@ -49,5 +53,11 @@ public class OperatorLeave extends Operator {
         pres.get(0).setA(val);
         rmvs.get(0).setA(val);
         adds.get(0).setA(val);
+    }
+    
+    @Override
+    public Operator clone(){
+        OperatorLeave ret = new OperatorLeave(this); 
+        return ret;
     }
 }

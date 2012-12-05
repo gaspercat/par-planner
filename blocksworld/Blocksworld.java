@@ -35,6 +35,14 @@ public class Blocksworld {
                 if(!parse_file(arg)) return;
             }
         }
+        
+        // Launch algorithm
+        execute(state_initial, state_goal);
+    }
+    
+    private static void execute(State initial, State goal){
+        Algorithm alg = new Algorithm();
+        alg.run(initial, goal);
     }
     
     // * ** INITIAL STATE FILE LOADER

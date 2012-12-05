@@ -34,6 +34,10 @@ public class OperatorPickUp extends Operator {
         adds.add(new PredicateUsedColsNum(PredicateUsedColsNum.N_DECREASED));
     }
     
+    public OperatorPickUp(OperatorPickUp op){
+        super(op);
+    }
+    
     @Override
     public void instanceValues(Predicate pred, State state){
         instanceA(state);
@@ -51,5 +55,11 @@ public class OperatorPickUp extends Operator {
         pres.get(3).setA(val);
         rmvs.get(0).setA(val);
         adds.get(0).setA(val);
+    }
+    
+    @Override
+    public Operator clone(){
+        OperatorPickUp ret = new OperatorPickUp(this); 
+        return ret;
     }
 }

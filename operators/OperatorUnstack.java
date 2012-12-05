@@ -32,6 +32,10 @@ public class OperatorUnstack extends Operator {
         adds.add(new PredicateFree(b));
     }
     
+    public OperatorUnstack(OperatorUnstack op){
+        super(op);
+    }
+    
     @Override
     public void instanceValues(Predicate pred, State state){
         if(pred instanceof PredicateOn){
@@ -69,5 +73,11 @@ public class OperatorUnstack extends Operator {
         pres.get(0).setB(val);
         rmvs.get(0).setB(val);
         adds.get(1).setA(val);
+    }
+    
+    @Override
+    public Operator clone(){
+        OperatorUnstack ret = new OperatorUnstack(this); 
+        return ret;
     }
 }
