@@ -7,6 +7,7 @@ package blocksworld;
 import java.util.ArrayList;
 import operators.Operator;
 import predicates.Predicate;
+import predicates.PredicateUsedColsNum;
 
 /**
  *
@@ -72,8 +73,18 @@ public class Algorithm {
     private ArrayList<Predicate> sortConditions(ArrayList<Predicate> conditions){
         ArrayList<Predicate> ret = new ArrayList<Predicate>();
         
-        // TODO: Sort conditions
-        // IMPORTANT!! UsedColsNum must always be first! (bottom of stack)
+        // First stack PredicateUsedColsNum elemement (if present)
+        for(Predicate pred: conditions){
+            if(pred instanceof PredicateUsedColsNum){
+                conditions.remove(pred);
+                ret.add(pred);
+                break;
+            }
+        }
+        
+        // TODO: Sort remaining conditions
+        
+        return ret;
     }
     
     private void instanceCondition(Predicate pred){
