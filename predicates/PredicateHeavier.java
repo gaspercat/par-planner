@@ -58,6 +58,16 @@ public class PredicateHeavier extends Predicate{
     }
     
     @Override
+    public Block getA(){
+        return this.paramA;
+    }
+    
+    @Override
+    public Block getB(){
+        return this.paramB;
+    }
+    
+    @Override
     public boolean isInstanced(){
         return (this.paramA != null) && (this.paramB != null);
     }

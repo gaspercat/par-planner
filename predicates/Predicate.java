@@ -73,6 +73,24 @@ public abstract class Predicate {
     // * ** SETTER STUB METHODS
     // * ******************************************
     
+    public Block getA(){
+        // STUB! Just for generalization purposes
+        return null;
+    }
+    
+    public Block getB(){
+        // STUB! Just for generalization purposes
+        return null;
+    }
+    
+    public int getN(){
+        // STUB! Just for generalization purposes
+        return -5;
+    }
+    
+    // * ** SETTER STUB METHODS
+    // * ******************************************
+    
     public void setA(Block a){
         // STUB! Just for generalization purposes
     }

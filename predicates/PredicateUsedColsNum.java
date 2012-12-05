@@ -37,8 +37,8 @@ public class PredicateUsedColsNum extends Predicate{
         }
         
         int i = ((Integer)params.get(0)).intValue();
-        if(i<-1 || i>3){
-            System.out.println("ERROR: Number of used columns must be between -1 and 3");
+        if(i < -2 || i > 3){
+            System.out.println("ERROR: Number of used columns must be between -2 and 3");
             return;
         }
 
@@ -53,6 +53,11 @@ public class PredicateUsedColsNum extends Predicate{
     @Override
     public String getTypeName(){
         return "used-cols-num";
+    }
+    
+    @Override
+    public int getN(){
+        return this.paramN;
     }
     
     @Override

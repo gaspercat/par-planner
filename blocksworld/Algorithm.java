@@ -53,10 +53,17 @@ public class Algorithm {
                 ArrayList<Predicate> unmet = state.getUnmetConditions((Preconditions)c);
                 if(unmet.size() > 0){
                     stack.add(c);
-                    stack.addAll(unmet);
+                    stack.addAll(sortConditions(unmet));
                 }
             }
         }
+    }
+    
+    private ArrayList<Predicate> sortConditions(ArrayList<Predicate> conditions){
+        ArrayList<Predicate> ret = new ArrayList<Predicate>();
+        
+        // TODO: Sort conditions
+        // IMPORTANT!! UsedColsNum must always be first! (bottom of stack)
     }
     
     private void instanceCondition(State state, Predicate pred){

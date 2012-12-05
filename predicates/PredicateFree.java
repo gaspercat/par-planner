@@ -48,6 +48,11 @@ public class PredicateFree extends Predicate{
     }
     
     @Override
+    public Block getA(){
+        return this.paramA;
+    }
+    
+    @Override
     public boolean isInstanced(){
         return this.paramA != null;
     }

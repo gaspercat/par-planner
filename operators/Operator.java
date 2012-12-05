@@ -29,7 +29,7 @@ public abstract class Operator {
         this.type = type;
     }
 
-    // * ** GETTE METHODS
+    // * ** GETTER METHODS
     // * ******************************************
     
     public Preconditions getPreconditions(){
@@ -40,7 +40,21 @@ public abstract class Operator {
     // * ******************************************
     
     public void apply(State s){
+        ArrayList<Predicate> preds = s.getPredicates();
+        int n;
         
+        // Remove predicates
+        for(Predicate predA: this.rmvs){
+            for(Predicate predB: preds){
+                if(predA.equals(predB)){
+                    preds.remove(predB);
+                    break;
+                }
+            }
+        }
+        
+        // Add predicates
+        preds.addAll(adds);
     }
     
     // * ** ABSTRACT METHODS
