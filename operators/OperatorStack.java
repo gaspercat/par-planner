@@ -100,6 +100,7 @@ public class OperatorStack extends Operator {
         pres.get(1).setA(val);
         pres.get(2).setA(val);
         rmvs.get(1).setA(val);
+        adds.get(0).setB(val);
     }
     
     @Override
