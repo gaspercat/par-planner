@@ -171,4 +171,15 @@ public class State {
         
         return true;
     }
+    
+    @Override
+    public String toString(){
+        String ret = "";
+        
+        for(Predicate p: this.preds){
+            ret += p.toString() + " ";
+        }
+        
+        return ret;
+    }
 }
