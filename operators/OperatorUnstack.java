@@ -51,12 +51,17 @@ public class OperatorUnstack extends Operator {
         // Select value
         // *******************************
         
-        ArrayList<Block> blocks = state.getAllBlocks();
-        
+        Block val;
         Block b = pres.get(2).getB();
-        if(b != null) blocks.remove(b);
         
-        Block val = blocks.get(rnd.nextInt(blocks.size()));
+        Predicate p = state.matchPredicate(new PredicateOn(null, b));
+        if(p != null){
+            val = p.getA();
+        }else{
+            ArrayList<Block> blocks = state.getAllBlocks();
+            if(b != null) blocks.remove(b);
+            val = blocks.get(rnd.nextInt(blocks.size()));
+        }
         
         // Give value to predicates
         // *******************************

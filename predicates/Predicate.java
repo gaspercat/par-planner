@@ -71,6 +71,18 @@ public abstract class Predicate {
         return this.is_valid;
     }
     
+    // * ** OPERATORS
+    // * ******************************************
+    
+    public boolean matches(Predicate pred){
+        if(pred.type != this.type) return false;
+        if(pred.getA() != null && this.getA() != null && this.getA() != pred.getA()) return false;
+        if(pred.getB() != null && this.getB() != null && this.getB() != pred.getB()) return false;
+        if(pred.getN() > 0 && this.getN() > 0 && pred.getN() != this.getN()) return false;
+        
+        return true;
+    }
+    
     // * ** ABSTRACT METHODS
     // * ******************************************
     

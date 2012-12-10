@@ -46,11 +46,18 @@ public class OperatorLeave extends Operator {
     }
     
     private void instanceA(State state){
+        Block val;
+        
         // Select value
         // *******************************
         
-        ArrayList<Block> blocks = state.getAllBlocks();
-        Block val = blocks.get(rnd.nextInt(blocks.size()));
+        Predicate p = state.getPredicate(Predicate.PICKED_UP);
+        if(p != null){
+            val = p.getA();
+        }else{
+            ArrayList<Block> blocks = state.getAllBlocks();
+            val = blocks.get(rnd.nextInt(blocks.size()));
+        }
         
         // Give value to predicates
         // *******************************

@@ -155,6 +155,7 @@ public class Algorithm {
                             
                             this.states.addAll(tstates);
                             this.operators.addAll(toperators);
+                            this.curr_state = this.states.get(this.states.size()-1);
                             
                             found = true;
                             break;

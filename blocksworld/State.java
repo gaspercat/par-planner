@@ -95,6 +95,14 @@ public class State {
         return ret;
     }
     
+    public Predicate matchPredicate(Predicate pred){
+        for(Predicate p: this.preds){
+            if(p.matches(pred)) return p;
+        }
+        
+        return null;
+    }
+    
     // * ** SETTER METHODS
     // * ******************************************
     
