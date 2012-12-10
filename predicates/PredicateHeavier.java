@@ -125,4 +125,13 @@ public class PredicateHeavier extends Predicate{
         String b = (this.paramB != null) ? this.paramB.getName() : "undef";
         return this.getTypeName() + "(" + this.paramA.getName() + ", " + this.paramB.getName() + ")";
     }
+    
+    @Override
+    public int compareTo(Object obj){
+        if(obj instanceof PredicateFree){
+            return 0;
+        }else{
+            return -1;
+        }
+    }
 }

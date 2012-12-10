@@ -113,4 +113,13 @@ public class PredicateUsedColsNum extends Predicate{
         String n = (this.paramN > 0) ? String.valueOf(this.paramN) : "undef";
         return this.getTypeName() + "(" + this.paramN + ")";
     }
+    
+    @Override
+    public int compareTo(Object obj){
+        if(obj instanceof PredicateFree){
+            return 0;
+        }else{
+            return 1;
+        }
+    }
 }

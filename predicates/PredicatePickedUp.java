@@ -105,4 +105,15 @@ public class PredicatePickedUp extends Predicate{
         String a = (this.paramA != null) ? this.paramA.getName() : "undef";
         return this.getTypeName() + "(" + a + ")";
     }
+    
+    @Override
+    public int compareTo(Object obj){
+        if(obj instanceof PredicateOnTable || obj instanceof PredicateOn || obj instanceof PredicateHeavier || obj instanceof PredicateFree){
+            return 1;
+        }else if(obj instanceof PredicateFree){
+            return 0;
+        }else{
+            return -1;
+        }
+    }
 }

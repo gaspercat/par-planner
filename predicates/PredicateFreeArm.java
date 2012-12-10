@@ -84,4 +84,15 @@ public class PredicateFreeArm extends Predicate{
     public String toString(){
         return this.getTypeName() + "()";
     }
+    
+    @Override
+    public int compareTo(Object obj){
+        if(obj instanceof PredicateUsedColsNum){
+            return -1;
+        }else if(obj instanceof PredicateFree){
+            return 0;
+        }else{
+            return 1;
+        }
+    }
 }

@@ -7,7 +7,7 @@ package predicates;
 import blocksworld.*;
 import java.util.ArrayList;
 
-public abstract class Predicate {
+public abstract class Predicate implements Comparable{
     public static final int ON_TABLE = 1;
     public static final int ON = 2;
     public static final int FREE = 3;
@@ -98,4 +98,7 @@ public abstract class Predicate {
     
     public abstract boolean equals(Predicate pred);
     public abstract Predicate clone();
+    
+    @Override
+    public abstract int compareTo(Object obj);
 }

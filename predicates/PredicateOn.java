@@ -122,4 +122,15 @@ public class PredicateOn extends Predicate{
         String b = (this.paramB != null) ? this.paramB.getName() : "undef";
         return this.getTypeName() + "(" + a + ", " + b + ")";
     }
+    
+    @Override
+    public int compareTo(Object obj){
+        if(obj instanceof PredicateOnTable || obj instanceof PredicateHeavier){
+            return 1;
+        }else if(obj instanceof PredicateFree){
+            return 0;
+        }else{
+            return -1;
+        }
+    }
 }

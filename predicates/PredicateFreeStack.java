@@ -85,4 +85,15 @@ public class PredicateFreeStack extends Predicate{
     public String toString(){
         return this.getType() + "()";
     }
+    
+    @Override
+    public int compareTo(Object obj){
+        if(obj instanceof PredicateUsedColsNum || obj instanceof PredicateFreeArm){
+            return -1;
+        }else if(obj instanceof PredicateFree){
+            return 0;
+        }else{
+            return 1;
+        }
+    }
 }
