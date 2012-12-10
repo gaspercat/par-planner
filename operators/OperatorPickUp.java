@@ -53,8 +53,15 @@ public class OperatorPickUp extends Operator {
         // Select value
         // *******************************
         
-        ArrayList<Block> blocks = state.getAllBlocks();
-        Block val = blocks.get(rnd.nextInt(blocks.size()));
+        ArrayList<Block> blocks = new ArrayList<Block>();
+        Block val;
+        
+        ArrayList<Predicate> preds = state.matchPredicates(new PredicateOnTable(null));
+        for(Predicate p: preds){
+            blocks.add(p.getA());
+        }
+        
+        val = blocks.get(rnd.nextInt(blocks.size()));
         
         
         // Give value to predicates
