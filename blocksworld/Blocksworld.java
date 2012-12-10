@@ -46,9 +46,10 @@ public class Blocksworld {
         alg.run(initial, goal);
         
         // Show result
-        ArrayList<Operator> plan = alg.getPlan();
+        System.out.println("Result of the planning:");
+        ArrayList<Operator> plan = alg.getOperators();
         for(Operator op: plan){
-            System.out.println(plan.toString());
+            System.out.println(op.toString());
         }
     }
     

@@ -79,4 +79,9 @@ public class PredicateFreeArm extends Predicate{
         Predicate ret = new PredicateFreeArm(this);
         return ret;
     }
+    
+    @Override
+    public String toString(){
+        return this.getTypeName() + "()";
+    }
 }

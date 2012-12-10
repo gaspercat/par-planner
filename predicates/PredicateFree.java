@@ -99,4 +99,10 @@ public class PredicateFree extends Predicate{
         Predicate ret = new PredicateFree(this);
         return ret;
     }
+    
+    @Override
+    public String toString(){
+        String a = (this.paramA != null) ? this.paramA.getName() : "undef";
+        return this.getTypeName() + "(" + a + ")";
+    }
 }

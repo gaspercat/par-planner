@@ -50,9 +50,15 @@ public class OperatorStack extends Operator {
     }
     
     private void instanceA(State state){
-        Block val = null;
+        // Select value
+        // *******************************
         
-        // TODO: Select value
+        ArrayList<Block> blocks = state.getAllBlocks();
+        
+        Block b = pres.get(1).getA();
+        if(b != null) blocks.remove(b);
+        
+        Block val = blocks.get(rnd.nextInt(blocks.size()));
         
         // Give value to predicates
         // *******************************
@@ -64,9 +70,15 @@ public class OperatorStack extends Operator {
     }
     
     private void instanceB(State state){
-        Block val = null;
+        // Select value
+        // *******************************
         
-        // TODO: Select value
+        ArrayList<Block> blocks = state.getAllBlocks();
+        
+        Block a = pres.get(0).getA();
+        if(a != null) blocks.remove(a);
+        
+        Block val = blocks.get(rnd.nextInt(blocks.size()));
         
         // Give value to predicates
         // *******************************

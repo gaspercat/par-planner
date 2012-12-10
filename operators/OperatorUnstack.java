@@ -48,9 +48,15 @@ public class OperatorUnstack extends Operator {
     }
     
     private void instanceA(State state){
-        Block val = null;
+        // Select value
+        // *******************************
         
-        // TODO: Select value
+        ArrayList<Block> blocks = state.getAllBlocks();
+        
+        Block b = pres.get(2).getB();
+        if(b != null) blocks.remove(b);
+        
+        Block val = blocks.get(rnd.nextInt(blocks.size()));
         
         // Give value to predicates
         // *******************************
@@ -63,9 +69,15 @@ public class OperatorUnstack extends Operator {
     }
     
     private void instanceB(State state){
-        Block val = null;
+        // Select value
+        // *******************************
         
-        // TODO: Select value
+        ArrayList<Block> blocks = state.getAllBlocks();
+        
+        Block a = pres.get(1).getA();
+        if(a != null) blocks.remove(a);
+        
+        Block val = blocks.get(rnd.nextInt(blocks.size()));
         
         // Give value to predicates
         // *******************************
@@ -83,8 +95,8 @@ public class OperatorUnstack extends Operator {
     
     @Override
     public String toString(){
-        Block a = this.pres.get(0).getA();
-        Block b = this.pres.get(0).getB();
-        return "unstack(" + a.getName() + ", " + b.getName() + ")";
+        Block a = this.pres.get(2).getA();
+        Block b = this.pres.get(2).getB();
+        return "unstack(" + (a != null ? a.getName() : "undef") + ", " + (b != null ? b.getName() : "undef") + ")";
     }
 }

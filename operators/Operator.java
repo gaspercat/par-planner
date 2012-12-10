@@ -5,6 +5,7 @@
 package operators;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import blocksworld.Preconditions;
 import blocksworld.State;
@@ -15,6 +16,8 @@ import predicates.Predicate;
  * @author gaspercat
  */
 public abstract class Operator {
+    protected static Random rnd = new Random();
+    
     public static final int PICK_UP = 1;
     public static final int LEAVE = 2;
     public static final int UNSTACK = 3;
@@ -27,6 +30,9 @@ public abstract class Operator {
     
     protected Operator(int type){
         this.type = type;
+        this.pres = new ArrayList<Predicate>();
+        this.rmvs = new ArrayList<Predicate>();
+        this.adds = new ArrayList<Predicate>();
     }
     
     protected Operator(Operator op){

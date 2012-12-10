@@ -37,6 +37,14 @@ public class State {
     // * ** GETTER METHODS
     // * ******************************************
 
+    public Predicate getPredicate(int type){
+        for(Predicate p: this.preds){
+            if(p.getType() == type) return p;
+        }
+        
+        return null;
+    }
+    
     public ArrayList<Predicate> getPredicates(){
         return this.preds;
     }
@@ -60,6 +68,28 @@ public class State {
         
         for(Predicate pred: conds.getPredicates()){
             if(!hasPredicate(pred)) ret.add(pred);
+        }
+        
+        return ret;
+    }
+    
+    public int getNumColumns(){
+        int ret = 0;
+        
+        for(Predicate pred: this.preds){
+            if(pred.getType() == Predicate.ON_TABLE) ret++;
+        }
+        
+        return ret;
+    }
+    
+    public ArrayList<Block> getAllBlocks(){
+        ArrayList<Block> ret = new ArrayList<Block>();
+        
+        for(Predicate p: this.preds){
+            if(p.getType() == Predicate.ON || p.getType() == Predicate.ON_TABLE){
+                ret.add(p.getA());
+            }
         }
         
         return ret;
@@ -90,12 +120,16 @@ public class State {
         }
         
         // Add new UsedColsNum
-        this.preds.add(new PredicateUsedColsNum(nCols));
+        this.preds.add(0, new PredicateUsedColsNum(nCols));
     }
     
     // * ** OPERATORS
     // * ******************************************
     
+    @Override
+    public State clone(){
+        return new State(this);
+    }
     
     public boolean equals(State s){
         if(s.preds.size() != this.preds.size()) return false;

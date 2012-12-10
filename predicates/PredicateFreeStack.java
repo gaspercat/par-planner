@@ -80,4 +80,9 @@ public class PredicateFreeStack extends Predicate{
         Predicate ret = new PredicateFreeStack(this);
         return ret;
     }
+    
+    @Override
+    public String toString(){
+        return this.getType() + "()";
+    }
 }

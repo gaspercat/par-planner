@@ -115,4 +115,11 @@ public class PredicateOn extends Predicate{
         Predicate ret = new PredicateOn(this);
         return ret;
     }
+    
+    @Override
+    public String toString(){
+        String a = (this.paramA != null) ? this.paramA.getName() : "undef";
+        String b = (this.paramB != null) ? this.paramB.getName() : "undef";
+        return this.getTypeName() + "(" + a + ", " + b + ")";
+    }
 }

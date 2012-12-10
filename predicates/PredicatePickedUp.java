@@ -99,4 +99,10 @@ public class PredicatePickedUp extends Predicate{
         Predicate ret = new PredicatePickedUp(this);
         return ret;
     }
+    
+    @Override
+    public String toString(){
+        String a = (this.paramA != null) ? this.paramA.getName() : "undef";
+        return this.getTypeName() + "(" + a + ")";
+    }
 }

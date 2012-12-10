@@ -99,4 +99,10 @@ public class PredicateOnTable extends Predicate{
         Predicate ret = new PredicateOnTable(this);
         return ret;
     }
+    
+    @Override
+    public String toString(){
+        String a = (this.paramA != null) ? this.paramA.getName() : "undef";
+        return this.getTypeName() + "(" + a + ")";
+    }
 }

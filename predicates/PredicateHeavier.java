@@ -118,4 +118,11 @@ public class PredicateHeavier extends Predicate{
         Predicate ret = new PredicateHeavier(this);
         return ret;
     }
+    
+    @Override
+    public String toString(){
+        String a = (this.paramA != null) ? this.paramA.getName() : "undef";
+        String b = (this.paramB != null) ? this.paramB.getName() : "undef";
+        return this.getTypeName() + "(" + this.paramA.getName() + ", " + this.paramB.getName() + ")";
+    }
 }

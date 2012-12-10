@@ -50,9 +50,12 @@ public class OperatorPickUp extends Operator {
     }
     
     private void instanceA(State state){
-        Block val = null;
+        // Select value
+        // *******************************
         
-        // TODO: Select value
+        ArrayList<Block> blocks = state.getAllBlocks();
+        Block val = blocks.get(rnd.nextInt(blocks.size()));
+        
         
         // Give value to predicates
         // *******************************
@@ -64,9 +67,7 @@ public class OperatorPickUp extends Operator {
     }
     
     private void instanceN(State state){
-        int val = 0;
-        
-        // TODO: Select value
+        int val = state.getNumColumns();
         
         // Give value to predicates
         // *******************************
@@ -84,7 +85,7 @@ public class OperatorPickUp extends Operator {
     
     @Override
     public String toString(){
-        Block a = this.pres.get(1).getA();
+        Block a = this.pres.get(2).getA();
         return "pick-up(" + a.getName() + ")";
     }
 }

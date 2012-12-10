@@ -107,4 +107,10 @@ public class PredicateUsedColsNum extends Predicate{
         Predicate ret = new PredicateUsedColsNum(this);
         return ret;
     }
+    
+    @Override
+    public String toString(){
+        String n = (this.paramN > 0) ? String.valueOf(this.paramN) : "undef";
+        return this.getTypeName() + "(" + this.paramN + ")";
+    }
 }
