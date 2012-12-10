@@ -145,7 +145,7 @@ public class Algorithm {
                     boolean found = false;
                     ArrayList<Operator> ops = heuristicSelectOperators(pred);
                     for(Operator op: ops){
-                        System.out.println("Adding new operator: " + op);
+                        System.out.println("Adding new operator to the stack: " + op);
                         Algorithm alg = new Algorithm();
                         alg.run(this.curr_state, op, this.solve_stack);
                         if(alg.isValid()){
@@ -155,10 +155,13 @@ public class Algorithm {
                             
                             this.states.addAll(tstates);
                             this.operators.addAll(toperators);
+                            System.out.println("Operators added to plan: "+toperators);
                             this.curr_state = this.states.get(this.states.size()-1);
                             
                             found = true;
                             break;
+                        }else{
+                            System.out.println("Operator discarted: "+op.toString());
                         }
                     }
                     
