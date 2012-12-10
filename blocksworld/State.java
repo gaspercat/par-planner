@@ -122,24 +122,25 @@ public class State {
     }
     
     // Method to set the number of used columns
-    public void setUsedColsNum(){
-        // Count number of used columns
-        int nCols = 0;
-        for(Predicate p: this.preds){
-            if(p.getType() == Predicate.ON_TABLE) nCols++;
-        }
-        
-        // Remove used columns predicate if present & invalid
-        for(Predicate p: this.preds){
-            if(p.getType() == Predicate.USED_COLS_NUM){
-                if(p.getN() == nCols) return;
-                this.preds.remove(p);
-                break;
+    public void sortPredicates(boolean setColsNum){
+        if(setColsNum){
+            // Count number of used columns
+            int nCols = 0;
+            for(Predicate p: this.preds){
+                if(p.getType() == Predicate.ON_TABLE) nCols++;
             }
+
+            // Remove used columns predicate if present
+            for(Predicate p: this.preds){
+                if(p.getType() == Predicate.USED_COLS_NUM){
+                    this.preds.remove(p);
+                    break;
+                }
+            }
+
+            // Add new UsedColsNum
+            this.preds.add(0, new PredicateUsedColsNum(nCols));
         }
-        
-        // Add new UsedColsNum
-        this.preds.add(0, new PredicateUsedColsNum(nCols));
         
         // Sort predicates
         Collections.sort(this.preds, Collections.reverseOrder());

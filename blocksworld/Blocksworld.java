@@ -109,8 +109,8 @@ public class Blocksworld {
         }
         
         // Set number of used columns on states
-        state_initial.setUsedColsNum();
-        state_goal.setUsedColsNum();
+        state_initial.sortPredicates(true);
+        state_goal.sortPredicates(false);
         
         return true;
     }
