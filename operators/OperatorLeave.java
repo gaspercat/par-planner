@@ -63,7 +63,7 @@ public class OperatorLeave extends Operator {
         // Give value to predicates
         // *******************************
         
-        pres.get(1).setA(val);
+        pres.get(2).setA(val);
         rmvs.get(0).setA(val);
         adds.get(0).setA(val);
     }
@@ -87,7 +87,7 @@ public class OperatorLeave extends Operator {
     
     @Override
     public String toString(){
-        Block a = this.pres.get(1).getA();
+        Block a = this.pres.get(2).getA();
         return "leave(" + (a == null ? "undef" : a.getName()) + ")";
     }
 }
