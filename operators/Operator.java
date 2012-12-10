@@ -85,6 +85,7 @@ public abstract class Operator {
     // * ** ABSTRACT METHODS
     // * ******************************************
     
+    public abstract boolean hasInstancesLeft();
     public abstract void instanceValues(Predicate pred, State state);
     public abstract Operator clone();
     

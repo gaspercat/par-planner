@@ -15,6 +15,8 @@ import predicates.*;
  * @author gaspercat
  */
 public class OperatorPickUp extends Operator {
+    ArrayList<Block>   instanceA = null;
+    
     public OperatorPickUp(Block a){
         super(Operator.PICK_UP);
         
@@ -39,6 +41,16 @@ public class OperatorPickUp extends Operator {
     }
     
     @Override
+    public boolean hasInstancesLeft(){
+        if(instanceA == null || instanceA.isEmpty()) return false;
+        
+        setA(null);
+        setN(0);
+        
+        return true;
+    }
+    
+    @Override
     public void instanceValues(Predicate pred, State state){
         if(pred instanceof PredicateOnTable){
             instanceA(state);
@@ -50,38 +62,28 @@ public class OperatorPickUp extends Operator {
     }
     
     private void instanceA(State state){
+        Block val;
+        
+        // Initialize values
+        // *******************************
+        
+        if(instanceA == null){
+            instanceA = new ArrayList<Block>();
+
+            ArrayList<Predicate> preds = state.matchPredicates(new PredicateOnTable(null));
+            for(Predicate p: preds) instanceA.add(p.getA());
+        }
+        
         // Select value
         // *******************************
         
-        ArrayList<Block> blocks = new ArrayList<Block>();
-        Block val;
-        
-        ArrayList<Predicate> preds = state.matchPredicates(new PredicateOnTable(null));
-        for(Predicate p: preds){
-            blocks.add(p.getA());
-        }
-        
-        val = blocks.get(rnd.nextInt(blocks.size()));
-        
-        
-        // Give value to predicates
-        // *******************************
-        
-        pres.get(2).setA(val);
-        pres.get(3).setA(val);
-        rmvs.get(0).setA(val);
-        adds.get(0).setA(val);
+        val = instanceA.remove(0);
+        setA(val);
     }
     
     private void instanceN(State state){
         int val = state.getNumColumns();
-        
-        // Give value to predicates
-        // *******************************
-        
-        pres.get(0).setN(val);
-        rmvs.get(2).setN(val);
-        adds.get(1).setN(val-1);
+        setN(val);
     }
     
     @Override
@@ -94,5 +96,18 @@ public class OperatorPickUp extends Operator {
     public String toString(){
         Block a = this.pres.get(2).getA();
         return "pick-up(" + (a == null ? "undef" : a.getName()) + ")";
+    }
+    
+    private void setA(Block val){
+        pres.get(2).setA(val);
+        pres.get(3).setA(val);
+        rmvs.get(0).setA(val);
+        adds.get(0).setA(val);
+    }
+    
+    private void setN(int val){
+        pres.get(0).setN(val);
+        rmvs.get(2).setN(val);
+        adds.get(1).setN(val-1);
     }
 }

@@ -145,25 +145,29 @@ public class Algorithm {
                     boolean found = false;
                     ArrayList<Operator> ops = heuristicSelectOperators(pred);
                     for(Operator op: ops){
-                        System.out.println("Adding new operator to the stack: " + op);
-                        Algorithm alg = new Algorithm();
-                        alg.run(this.curr_state, op, this.solve_stack);
-                        if(alg.isValid()){
-                            ArrayList<State> tstates       = alg.getStates();
-                            ArrayList<Operator> toperators = alg.getOperators();
-                            tstates.remove(0);
-                            
-                            this.states.addAll(tstates);
-                            this.operators.addAll(toperators);
-                            System.out.println("Operators added to plan: "+toperators);
-                            System.out.println("Actual plan: "+this.operators);
-                            this.curr_state = this.states.get(this.states.size()-1);
-                            
-                            found = true;
-                            break;
-                        }else{
-                            System.out.println("Operator discarted: "+op.toString());
-                        }
+                        Algorithm alg;
+                        
+                        do{
+                            System.out.println("Adding new operator to the stack: " + op);
+                            alg = new Algorithm();
+                            alg.run(this.curr_state, op, this.solve_stack);
+                            if(alg.isValid()){
+                                ArrayList<State> tstates       = alg.getStates();
+                                ArrayList<Operator> toperators = alg.getOperators();
+                                tstates.remove(0);
+
+                                this.states.addAll(tstates);
+                                this.operators.addAll(toperators);
+                                System.out.println("Curren plan: "+this.operators);
+                                System.out.println("Operators added to plan: "+toperators);
+                                this.curr_state = this.states.get(this.states.size()-1);
+
+                                found = true;
+                                break;
+                            }else{
+                                System.out.println("Operator discarted: "+op.toString());
+                            }
+                        }while(!alg.isValid() && op.hasInstancesLeft());
                     }
                     
                     // Remove predicate from list of predicates being solved

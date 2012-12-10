@@ -15,6 +15,8 @@ import predicates.*;
  * @author gaspercat
  */
 public class OperatorLeave extends Operator {
+    private ArrayList<Block> instanceA = null;
+    
     public OperatorLeave(Block a){
         super(Operator.LEAVE);
         
@@ -38,6 +40,16 @@ public class OperatorLeave extends Operator {
     }
     
     @Override
+    public boolean hasInstancesLeft(){
+        if(instanceA == null || instanceA.isEmpty()) return false;
+        
+        setA(null);
+        setN(0);
+        
+        return true;
+    }
+    
+    @Override
     public void instanceValues(Predicate pred, State state){
         if(pred instanceof PredicatePickedUp){
             instanceA(state);
@@ -49,34 +61,32 @@ public class OperatorLeave extends Operator {
     private void instanceA(State state){
         Block val;
         
+        // Initialize values
+        // *******************************
+        
+        if(instanceA == null){
+            instanceA = new ArrayList<Block>();
+            
+            Predicate p = state.getPredicate(Predicate.PICKED_UP);
+            if(p != null){
+                instanceA.add(p.getA());
+            }
+            
+            ArrayList<Block> blocks = state.getAllBlocks();
+            blocks.remove(p.getA());
+            instanceA.addAll(blocks);
+        }
+        
         // Select value
         // *******************************
         
-        Predicate p = state.getPredicate(Predicate.PICKED_UP);
-        if(p != null){
-            val = p.getA();
-        }else{
-            ArrayList<Block> blocks = state.getAllBlocks();
-            val = blocks.get(rnd.nextInt(blocks.size()));
-        }
-        
-        // Give value to predicates
-        // *******************************
-        
-        pres.get(2).setA(val);
-        rmvs.get(0).setA(val);
-        adds.get(0).setA(val);
+        val = instanceA.remove(0);
+        setA(val);
     }
     
     private void instanceN(State state){
         int val = state.getNumColumns();
-        
-        // Give value to predicates
-        // *******************************
-        
-        pres.get(0).setN(val);
-        rmvs.get(1).setN(val);
-        adds.get(1).setN(val+1);
+        setN(val);
     }
     
     @Override
@@ -89,5 +99,17 @@ public class OperatorLeave extends Operator {
     public String toString(){
         Block a = this.pres.get(2).getA();
         return "leave(" + (a == null ? "undef" : a.getName()) + ")";
+    }
+    
+    private void setA(Block val){
+        pres.get(2).setA(val);
+        rmvs.get(0).setA(val);
+        adds.get(0).setA(val);
+    }
+    
+    private void setN(int val){
+        pres.get(0).setN(val);
+        rmvs.get(1).setN(val);
+        adds.get(1).setN(val+1);
     }
 }
