@@ -14,12 +14,16 @@ import predicates.PredicateUsedColsNum;
  * @author gaspercat
  */
 public class Algorithm {
-    private ArrayList<Operator> plan;
-    private State state;
+    private ArrayList<State>    states;
+    private ArrayList<Operator> operators;
+    
+    
+    private State curr_state;
     private ArrayList<Object> stack;
     
     public Algorithm(){
-        this.plan = new ArrayList<Operator>();
+        this.states = new ArrayList<State>();
+        this.operators = new ArrayList<Operator>();
         this.stack = new ArrayList<Object>();
     }
     
@@ -27,7 +31,8 @@ public class Algorithm {
     // * ******************************************
             
     public void run(State initial, State goal){
-        this.state = initial;
+        this.curr_state = initial;
+        this.states.add(this.curr_state);
         
         this.stack.add(new Preconditions(goal.getPredicates()));
         this.stack.addAll(goal.getPredicates());
@@ -37,8 +42,14 @@ public class Algorithm {
             
             // If c is an operator
             if(c instanceof Operator){
-                this.plan.add((Operator)c);
-                this.state = new State(this.state, (Operator)c);
+                // Update current state
+                this.operators.add((Operator)c);
+                this.curr_state = new State(this.curr_state, (Operator)c);
+                
+                // Add new state & operator to plan
+                this.states.add(this.curr_state);
+                this.operators.add((Operator)c);
+                
                 
             // If c is a condition not fully instanced
             }else if((c instanceof Predicate) && !((Predicate)c).isInstanced()){
@@ -48,7 +59,7 @@ public class Algorithm {
             // If c is a condition fully instanced
             }else if((c instanceof Predicate) && ((Predicate)c).isInstanced()){
                 Predicate pred = (Predicate)c;
-                if(!this.state.hasPredicate(pred)){
+                if(!this.curr_state.hasPredicate(pred)){
                     Operator op = heuristicSelectOperator(pred);
                     this.stack.add(op);
                     this.stack.add(op.getPreconditions());
@@ -56,27 +67,31 @@ public class Algorithm {
                 
             // If c is a list of conditions
             }else if(c instanceof Preconditions){
-                ArrayList<Predicate> unmet = state.getUnmetConditions((Preconditions)c);
+                ArrayList<Predicate> unmet = this.curr_state.getUnmetConditions((Preconditions)c);
                 if(unmet.size() > 0){
                     this.stack.add(c);
                     this.stack.addAll(unmet);
                 }
             }
         }
+        
+        // Add goal state to plan
+        this.states.add(goal);
     }
     
     public ArrayList<Operator> getPlan(){
         ArrayList<Operator> ret = new ArrayList<Operator>();
         
-        for(int i=0;i<this.plan.size();i++){
-            ret.add(this.plan.get(i).clone());
+        for(int i=0;i<this.operators.size();i++){
+            ret.add(this.operators.get(i).clone());
         }
         
         return ret;
     }
     
     public void clear(){
-        this.plan.clear();
+        this.states.clear();
+        this.operators.clear();
         this.stack.clear();
     }
     
@@ -94,7 +109,7 @@ public class Algorithm {
         }
         
         // Define value at operator
-        op.instanceValues(pred, this.state);
+        op.instanceValues(pred, this.curr_state);
     }
     
     private Operator heuristicSelectOperator(Predicate pred){
