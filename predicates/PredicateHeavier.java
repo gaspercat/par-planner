@@ -123,7 +123,7 @@ public class PredicateHeavier extends Predicate{
     public String toString(){
         String a = (this.paramA != null) ? this.paramA.getName() : "undef";
         String b = (this.paramB != null) ? this.paramB.getName() : "undef";
-        return this.getTypeName() + "(" + this.paramA.getName() + ", " + this.paramB.getName() + ")";
+        return this.getTypeName() + "(" + a + ", " + b + ")";
     }
     
     @Override
