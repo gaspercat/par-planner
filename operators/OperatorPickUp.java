@@ -20,9 +20,9 @@ public class OperatorPickUp extends Operator {
         
         // Add preconditions
         pres.add(new PredicateUsedColsNum(PredicateUsedColsNum.N_UNDEFINED));
-        pres.add(new PredicateOnTable(a));
         pres.add(new PredicateFreeArm());
         pres.add(new PredicateFree(a));
+        pres.add(new PredicateOnTable(a));
         
         // Add deletions
         rmvs.add(new PredicateOnTable(a));
@@ -57,7 +57,7 @@ public class OperatorPickUp extends Operator {
         // Give value to predicates
         // *******************************
         
-        pres.get(1).setA(val);
+        pres.get(2).setA(val);
         pres.get(3).setA(val);
         rmvs.get(0).setA(val);
         adds.get(0).setA(val);

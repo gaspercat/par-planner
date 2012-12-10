@@ -5,8 +5,8 @@
 package blocksworld;
 
 import java.util.ArrayList;
-import operators.Operator;
-import predicates.Predicate;
+import operators.*;
+import predicates.*;
 import predicates.PredicateUsedColsNum;
 
 /**
@@ -22,12 +22,15 @@ public class Algorithm {
         this.plan = new ArrayList<Operator>();
         this.stack = new ArrayList<Object>();
     }
+    
+    // * ** CONTROL METHODS
+    // * ******************************************
             
     public void run(State initial, State goal){
         this.state = initial;
         
-        this.stack.add(goal);
-        this.stack.add(goal.getPredicates());
+        this.stack.add(new Preconditions(goal.getPredicates()));
+        this.stack.addAll(goal.getPredicates());
         
         while(this.stack.size() > 0){
             Object c = this.stack.remove(this.stack.size()-1);
@@ -39,7 +42,7 @@ public class Algorithm {
                 
             // If c is a condition not fully instanced
             }else if((c instanceof Predicate) && !((Predicate)c).isInstanced()){
-                instanceCondition((Predicate)c);
+                heuristicInstanceCondition((Predicate)c);
                 this.stack.add(c);
                 
             // If c is a condition fully instanced
@@ -56,7 +59,7 @@ public class Algorithm {
                 ArrayList<Predicate> unmet = state.getUnmetConditions((Preconditions)c);
                 if(unmet.size() > 0){
                     this.stack.add(c);
-                    this.stack.addAll(sortConditions(unmet));
+                    this.stack.addAll(unmet);
                 }
             }
         }
@@ -72,24 +75,15 @@ public class Algorithm {
         return ret;
     }
     
-    private ArrayList<Predicate> sortConditions(ArrayList<Predicate> conditions){
-        ArrayList<Predicate> ret = new ArrayList<Predicate>();
-        
-        // First stack PredicateUsedColsNum elemement (if present)
-        for(Predicate pred: conditions){
-            if(pred instanceof PredicateUsedColsNum){
-                conditions.remove(pred);
-                ret.add(pred);
-                break;
-            }
-        }
-        
-        // TODO: Sort remaining conditions
-        
-        return ret;
+    public void clear(){
+        this.plan.clear();
+        this.stack.clear();
     }
     
-    private void instanceCondition(Predicate pred){
+    // * ** HEURISTIC METHODS
+    // * ******************************************
+    
+    private void heuristicInstanceCondition(Predicate pred){
         // Get related operator
         Operator op = null;
         for(int i=this.stack.size()-1;;i--){
@@ -104,11 +98,43 @@ public class Algorithm {
     }
     
     private Operator heuristicSelectOperator(Predicate pred){
+        // TODO: Finish this heuristic
+        Operator op = null;
         
-    }
-    
-    private void clear(){
-        this.plan.clear();
-        this.stack.clear();
+        switch(pred.getType()){
+            
+            // If piece must be free but it isn't
+            case Predicate.FREE:
+                op = new OperatorUnstack((Block)null, pred.getA());
+                break;
+                
+            // If free arm needed but is currently used
+            case Predicate.FREE_ARM:
+                
+                // Can be a leave or a stack
+                break;
+                
+            // If free stack needed but 3 already used
+            case Predicate.FREE_STACK:
+                op = new OperatorPickUp((Block)null);
+                break;
+                
+            // If a block must be over another
+            case Predicate.ON:
+                op = new OperatorStack(pred.getA(), pred.getB());
+                break;
+                
+            // If a block must be on the table
+            case Predicate.ON_TABLE:
+                op = new OperatorLeave(pred.getA());
+                break;
+                
+            // If a block must be picked up
+            case Predicate.PICKED_UP:
+                op = new OperatorPickUp(pred.getA());
+                break;
+        }
+        
+        return op;
     }
 }

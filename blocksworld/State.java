@@ -59,7 +59,6 @@ public class State {
         ArrayList<Predicate> ret = new ArrayList<Predicate>();
         
         for(Predicate pred: conds.getPredicates()){
-            boolean found = false;
             if(!hasPredicate(pred)) ret.add(pred);
         }
         

@@ -19,9 +19,9 @@ public class OperatorUnstack extends Operator {
         super(Operator.UNSTACK);
 
         // Add preconditions
-        pres.add(new PredicateOn(a, b));
-        pres.add(new PredicateFree(a));
         pres.add(new PredicateFreeArm());
+        pres.add(new PredicateFree(a));
+        pres.add(new PredicateOn(a, b));
         
         // Add deletions
         rmvs.add(new PredicateOn(a, b));
@@ -55,8 +55,8 @@ public class OperatorUnstack extends Operator {
         // Give value to predicates
         // *******************************
         
-        pres.get(0).setA(val);
         pres.get(1).setA(val);
+        pres.get(2).setA(val);
         rmvs.get(0).setA(val);
         adds.get(0).setA(val);
         
@@ -70,7 +70,7 @@ public class OperatorUnstack extends Operator {
         // Give value to predicates
         // *******************************
         
-        pres.get(0).setB(val);
+        pres.get(2).setB(val);
         rmvs.get(0).setB(val);
         adds.get(1).setA(val);
     }

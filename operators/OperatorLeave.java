@@ -19,8 +19,8 @@ public class OperatorLeave extends Operator {
         super(Operator.LEAVE);
         
         // Add preconditions
-        pres.add(new PredicatePickedUp(a));
         pres.add(new PredicateUsedColsNum(PredicateUsedColsNum.N_UNDEFINED));
+        pres.add(new PredicatePickedUp(a));
         
         // Add deletions
         rmvs.add(new PredicatePickedUp(a));
@@ -54,7 +54,7 @@ public class OperatorLeave extends Operator {
         // Give value to predicates
         // *******************************
         
-        pres.get(0).setA(val);
+        pres.get(1).setA(val);
         rmvs.get(0).setA(val);
         adds.get(0).setA(val);
     }
@@ -68,7 +68,7 @@ public class OperatorLeave extends Operator {
         // Give value to predicates
         // *******************************
         
-        pres.get(1).setN(val);
+        pres.get(0).setN(val);
         rmvs.get(1).setN(val);
         adds.get(1).setN(val+1);
     }
