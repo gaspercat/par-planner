@@ -92,4 +92,26 @@ public class State {
         // Add new UsedColsNum
         this.preds.add(new PredicateUsedColsNum(nCols));
     }
+    
+    // * ** OPERATORS
+    // * ******************************************
+    
+    
+    public boolean equals(State s){
+        if(s.preds.size() != this.preds.size()) return false;
+        
+        for(Predicate p: this.preds){
+            boolean found = false;
+            for(Predicate p2: s.preds){
+                if(p.equals(p)){
+                    found = true;
+                    break;
+                }
+            }
+            
+            if(!found) return false;
+        }
+        
+        return true;
+    }
 }

@@ -152,4 +152,15 @@ public class Algorithm {
         
         return op;
     }
+    
+    // * ** HELPER METHODS
+    // * ******************************************
+    
+    private boolean isStateVisited(State s){
+        for(State ts: this.states){
+            if(ts.equals(s)) return true;
+        }
+        
+        return false;
+    }
 }
