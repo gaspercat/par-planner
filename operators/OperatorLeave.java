@@ -20,6 +20,7 @@ public class OperatorLeave extends Operator {
         
         // Add preconditions
         pres.add(new PredicateUsedColsNum(PredicateUsedColsNum.N_UNDEFINED));
+        pres.add(new PredicateFreeStack());
         pres.add(new PredicatePickedUp(a));
         
         // Add deletions
@@ -87,6 +88,6 @@ public class OperatorLeave extends Operator {
     @Override
     public String toString(){
         Block a = this.pres.get(1).getA();
-        return "leave(" + a.getName() + ")";
+        return "leave(" + (a == null ? "undef" : a.getName()) + ")";
     }
 }
