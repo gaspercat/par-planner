@@ -1,6 +1,7 @@
 package blocksworld;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import predicates.Predicate;
 import predicates.PredicateFreeStack;
 import predicates.PredicateUsedColsNum;
@@ -103,6 +104,16 @@ public class State {
         return null;
     }
     
+    public ArrayList<Predicate> matchPredicates(Predicate pred){
+        ArrayList<Predicate> ret = new ArrayList<Predicate>();
+        
+        for(Predicate p: this.preds){
+            if(p.matches(pred)) ret.add(p);
+        }
+        
+        return ret;
+    }
+    
     // * ** SETTER METHODS
     // * ******************************************
     
@@ -129,6 +140,9 @@ public class State {
         
         // Add new UsedColsNum
         this.preds.add(0, new PredicateUsedColsNum(nCols));
+        
+        // Sort predicates
+        Collections.sort(this.preds, Collections.reverseOrder());
     }
     
     // * ** OPERATORS
