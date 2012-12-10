@@ -156,9 +156,6 @@ public class Algorithm {
                             this.states.addAll(tstates);
                             this.operators.addAll(toperators);
                             
-                            this.stack.add(op);
-                            this.stack.add(op.getPreconditions());
-                            
                             found = true;
                             break;
                         }
