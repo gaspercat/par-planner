@@ -113,7 +113,6 @@ public class Algorithm {
             if(c instanceof Operator){
                 // Update current state
                 System.out.println("Applying operator: " + c.toString());
-                this.operators.add((Operator)c);
                 this.curr_state = new State(this.curr_state, (Operator)c);
                 
                 // Add new state & operator to plan
