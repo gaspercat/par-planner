@@ -61,8 +61,8 @@ public class OperatorStack extends Operator {
             blocks.remove(b);
             
             // Remove elements heavier than b
-            ArrayList<Predicate> preds = state.matchPredicates(new PredicateHeavier(b, null));
-            for(Predicate p: preds) blocks.remove(p.getB());
+            ArrayList<Predicate> preds = state.matchPredicates(new PredicateHeavier(null, b));
+            for(Predicate p: preds) blocks.remove(p.getA());
         }
         
         Block val = blocks.get(rnd.nextInt(blocks.size()));
@@ -83,7 +83,14 @@ public class OperatorStack extends Operator {
         ArrayList<Block> blocks = state.getAllBlocks();
         
         Block a = pres.get(0).getA();
-        if(a != null) blocks.remove(a);
+        if(a != null){
+            // Remove a from possible options
+            blocks.remove(a);
+            
+            // Remove elements lighter than a
+            ArrayList<Predicate> preds = state.matchPredicates(new PredicateHeavier(a, null));
+            for(Predicate p: preds) blocks.remove(p.getB());
+        }
         
         Block val = blocks.get(rnd.nextInt(blocks.size()));
         
