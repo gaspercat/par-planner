@@ -3,6 +3,7 @@ package blocksworld;
 import java.util.ArrayList;
 import predicates.Predicate;
 import predicates.PredicateFreeStack;
+import predicates.PredicateUsedColsNum;
 import operators.Operator;
 
 public class State {
@@ -70,5 +71,26 @@ public class State {
     
     public void addPredicate(Predicate pred){
         preds.add(pred);
+    }
+    
+    // Method to set the number of used columns
+    public void setUsedColsNum(){
+        // Count number of used columns
+        int nCols = 0;
+        for(Predicate p: this.preds){
+            if(p.getType() == Predicate.ON_TABLE) nCols++;
+        }
+        
+        // Remove used columns predicate if present & invalid
+        for(Predicate p: this.preds){
+            if(p.getType() == Predicate.USED_COLS_NUM){
+                if(p.getN() == nCols) return;
+                this.preds.remove(p);
+                break;
+            }
+        }
+        
+        // Add new UsedColsNum
+        this.preds.add(new PredicateUsedColsNum(nCols));
     }
 }
