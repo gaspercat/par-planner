@@ -128,6 +128,7 @@ public class Algorithm {
                 
             // If c is a condition fully instanced
             }else if((c instanceof Predicate) && ((Predicate)c).isInstanced()){
+                System.out.println("Actual state:" +this.curr_state.toString());
                 System.out.println("Checking condition: " + c);
                 Predicate pred = (Predicate)c;
                 if(!this.curr_state.hasPredicate(pred)){
