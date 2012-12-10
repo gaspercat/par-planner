@@ -156,6 +156,7 @@ public class Algorithm {
                             this.states.addAll(tstates);
                             this.operators.addAll(toperators);
                             System.out.println("Operators added to plan: "+toperators);
+                            System.out.println("Actual plan: "+this.operators);
                             this.curr_state = this.states.get(this.states.size()-1);
                             
                             found = true;
