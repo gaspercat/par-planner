@@ -41,7 +41,17 @@ public class OperatorPickUp extends Operator {
     }
     
     @Override
-    public boolean hasInstancesLeft(){
+    public Block getA(){
+        return pres.get(2).getA();
+    }
+    
+    @Override
+    public Block getB(){
+        return null;
+    }
+    
+    @Override
+    public boolean canBeInstanced(){
         if(instanceA == null || instanceA.isEmpty()) return false;
         
         setA(null);
@@ -69,15 +79,24 @@ public class OperatorPickUp extends Operator {
         
         if(instanceA == null){
             instanceA = new ArrayList<Block>();
-
+            
             ArrayList<Predicate> preds = state.matchPredicates(new PredicateOnTable(null));
-            for(Predicate p: preds) instanceA.add(p.getA());
+            
+            // For each on-table element
+            for(Predicate p: preds){
+                // If heaviest element, ignore
+                Predicate hp = state.matchPredicate(new PredicateHeavier(null, p.getA()));
+                if(hp == null) continue;
+                
+                // Add on-table element to value options
+                instanceA.add(p.getA());
+            }
         }
         
         // Select value
         // *******************************
         
-        val = instanceA.remove(rnd.nextInt(instanceA.size()));
+        val = instanceA.get(rnd.nextInt(instanceA.size()));
         setA(val);
     }
     

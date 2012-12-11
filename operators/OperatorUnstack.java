@@ -40,7 +40,17 @@ public class OperatorUnstack extends Operator {
     }
     
     @Override
-    public boolean hasInstancesLeft(){
+    public Block getA(){
+        return pres.get(2).getA();
+    }
+    
+    @Override
+    public Block getB(){
+        return pres.get(2).getB();
+    }
+    
+    @Override
+    public boolean canBeInstanced(){
         if(instanceA == null && instanceB == null) return false;
         if(instanceA != null && instanceA.isEmpty()) return false;
         if(instanceB != null && instanceB.isEmpty()) return false;
@@ -127,7 +137,7 @@ public class OperatorUnstack extends Operator {
         // Select value
         // *******************************
         
-        val = instanceB.remove(rnd.nextInt(instanceB.size()));
+        val = instanceB.get(rnd.nextInt(instanceB.size()));
         setB(val);
     }
     

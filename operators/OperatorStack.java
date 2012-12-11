@@ -17,6 +17,8 @@ import predicates.*;
 public class OperatorStack extends Operator {
     ArrayList<Block> instanceA = null;
     ArrayList<Block> instanceB = null;
+    ArrayList<Block> blacklistA = null;
+    ArrayList<Block> blacklistB = null;
     
     public OperatorStack(Block a, Block b){
         super(Operator.STACK);
@@ -35,12 +37,43 @@ public class OperatorStack extends Operator {
         adds.add(new PredicateFreeArm());
     }
     
+    public OperatorStack(Block a, Block b, ArrayList<Block> blacklistA, ArrayList<Block> blacklistB){
+        super(Operator.STACK);
+
+        // Add preconditions
+        pres.add(new PredicatePickedUp(a));
+        pres.add(new PredicateFree(b));
+        pres.add(new PredicateHeavier(b, a));
+        
+        // Add deletions
+        rmvs.add(new PredicatePickedUp(a));
+        rmvs.add(new PredicateFree(b));
+        
+        // Add additions
+        adds.add(new PredicateOn(a, b));
+        adds.add(new PredicateFreeArm());
+        
+        // Set blacklists
+        this.blacklistA = blacklistA;
+        this.blacklistB = blacklistB;
+    }
+    
     public OperatorStack(OperatorStack op){
         super(op);
     }
     
     @Override
-    public boolean hasInstancesLeft(){
+    public Block getA(){
+        return pres.get(0).getA();
+    }
+    
+    @Override
+    public Block getB(){
+        return pres.get(1).getA();
+    }
+    
+    @Override
+    public boolean canBeInstanced(){
         if(instanceA == null && instanceB == null) return false;
         if(instanceA != null && instanceA.isEmpty()) return false;
         if(instanceB != null && instanceB.isEmpty()) return false;
@@ -82,6 +115,9 @@ public class OperatorStack extends Operator {
                 // Remove elements heavier than b
                 ArrayList<Predicate> preds = state.matchPredicates(new PredicateHeavier(null, b));
                 for(Predicate p: preds) instanceA.remove(p.getA());
+                
+                // Remove blacklisted elements
+                instanceA.removeAll(this.blacklistA);
             }
         }
         
@@ -110,6 +146,9 @@ public class OperatorStack extends Operator {
                 // Remove elements lighter than a
                 ArrayList<Predicate> preds = state.matchPredicates(new PredicateHeavier(a, null));
                 for(Predicate p: preds) instanceB.remove(p.getB());
+                
+                // Remove blacklisted elements
+                instanceB.removeAll(this.blacklistB);
             }
         }
         

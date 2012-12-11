@@ -6,6 +6,7 @@ import predicates.Predicate;
 import predicates.PredicateFreeStack;
 import predicates.PredicateUsedColsNum;
 import operators.Operator;
+import predicates.*;
 
 public class State {
     private ArrayList<Predicate> preds;
@@ -88,7 +89,7 @@ public class State {
         ArrayList<Block> ret = new ArrayList<Block>();
         
         for(Predicate p: this.preds){
-            if(p.getType() == Predicate.ON || p.getType() == Predicate.ON_TABLE){
+            if(p.getType() == Predicate.ON || p.getType() == Predicate.ON_TABLE || p.getType() == Predicate.PICKED_UP){
                 ret.add(p.getA());
             }
         }
@@ -122,7 +123,7 @@ public class State {
     }
     
     // Method to set the number of used columns
-    public void sortPredicates(boolean setColsNum){
+    /*public void sortPredicates(boolean setColsNum){
         if(setColsNum){
             // Count number of used columns
             int nCols = 0;
@@ -144,6 +145,60 @@ public class State {
         
         // Sort predicates
         Collections.sort(this.preds, Collections.reverseOrder());
+    }*/
+    
+    public void sortPredicates(boolean setColsNum){
+        ArrayList<Predicate> ret = new ArrayList<Predicate>();
+        
+        Predicate p;
+        while((p = removeHeaviestOnTable()) != null){
+            ret.add(0, p);
+            while(p != null){
+                p = this.matchPredicate(new PredicateOn(null, p.getA()));
+                if(p != null){
+                    this.preds.remove(p);
+                    ret.add(0, p);
+                }
+            }
+        }
+        
+        Collections.sort(this.preds, Collections.reverseOrder());
+        ret.addAll(0, this.preds);
+        
+        if(setColsNum){
+            // Count number of used columns
+            int nCols = 0;
+            for(Predicate tp: this.preds){
+                if(tp.getType() == Predicate.ON_TABLE) nCols++;
+            }
+
+            // Remove used columns predicate if present
+            for(Predicate tp: this.preds){
+                if(tp.getType() == Predicate.USED_COLS_NUM){
+                    this.preds.remove(tp);
+                    break;
+                }
+            }
+
+            // Add new UsedColsNum
+            this.preds.add(0, new PredicateUsedColsNum(nCols));
+        }
+        
+        this.preds = ret;
+    }
+    
+    private Predicate removeHeaviestOnTable(){
+        Predicate ret = null;
+        
+        ArrayList<Predicate> ont = this.matchPredicates(new PredicateOnTable(null));
+        for(Predicate on: ont){
+            if(this.matchPredicate(new PredicateHeavier(null, on.getA())) == null){
+                this.preds.remove(on);
+                ret = on;
+            }
+        }
+        
+        return ret;
     }
     
     // * ** OPERATORS

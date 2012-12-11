@@ -181,12 +181,22 @@ public class Algorithm {
                 //p = this.goal_state.matchPredicate(new PredicateOnTable(tp.getA()));
                 //if(p != null){
                 
+                // If block was picked up, make a stack
+                Operator prev_op = this.operators.get(this.operators.size()-1);
+                if(prev_op.getType() == Operator.PICK_UP){
+                    return new OperatorStack(tp.getA(), null);
+                }
+                
+                // If block was unstacked, blacklist origin stack
+                ArrayList<Block> bl = new ArrayList<Block>();
+                bl.add(prev_op.getB());
+                
                 p = this.curr_state.matchPredicate(new PredicateHeavier(null, tp.getA()));
                 if(p==null || rnd.nextInt(10)<5){
                     return new OperatorLeave(tp.getA());
                     //op.add(new OperatorStack(tp.getA(), null));
                 }else{
-                    return new OperatorStack(tp.getA(), null);
+                    return new OperatorStack(tp.getA(), null, null, bl);
                     //op.add(new OperatorLeave(tp.getA()));
                 }
                 
@@ -204,9 +214,10 @@ public class Algorithm {
                 
             // If a block must be picked up
             case Predicate.PICKED_UP:
-                //p = this.curr_state.matchPredicate(new PredicateOnTable(pred.getA()));
-                //if(p != null){
-                if(rnd.nextInt(10)<5){
+                p = this.curr_state.matchPredicate(new PredicateOnTable(pred.getA()));
+                if(p != null){
+                
+                //if(rnd.nextInt(10)<5){
                     return new OperatorPickUp(pred.getA());
                     //op.add(new OperatorUnstack(pred.getA(), null));
                 }else{

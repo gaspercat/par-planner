@@ -39,8 +39,19 @@ public class OperatorLeave extends Operator {
         super(op);
     }
     
+
     @Override
-    public boolean hasInstancesLeft(){
+    public Block getA(){
+        return pres.get(1).getA();
+    }
+    
+    @Override
+    public Block getB(){
+        return null;
+    }
+    
+    @Override
+    public boolean canBeInstanced(){
         if(instanceA == null || instanceA.isEmpty()) return false;
         
         setA(null);

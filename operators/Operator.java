@@ -10,6 +10,7 @@ import java.util.Random;
 import blocksworld.Preconditions;
 import blocksworld.State;
 import predicates.Predicate;
+import blocksworld.Block;
 
 /**
  *
@@ -57,6 +58,13 @@ public abstract class Operator {
     // * ** GETTER METHODS
     // * ******************************************
     
+    public int getType(){
+        return this.type;
+    }
+    
+    public abstract Block getA();
+    public abstract Block getB();
+    
     public Preconditions getPreconditions(){
         return new Preconditions(this.pres);
     }
@@ -85,7 +93,7 @@ public abstract class Operator {
     // * ** ABSTRACT METHODS
     // * ******************************************
     
-    public abstract boolean hasInstancesLeft();
+    public abstract boolean canBeInstanced();
     public abstract void instanceValues(Predicate pred, State state);
     public abstract Operator clone();
     
