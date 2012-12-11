@@ -160,7 +160,7 @@ public class State {
         for(Predicate p: this.preds){
             boolean found = false;
             for(Predicate p2: s.preds){
-                if(p.equals(p)){
+                if(p.equals(p2)){
                     found = true;
                     break;
                 }

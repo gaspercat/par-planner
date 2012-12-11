@@ -22,8 +22,8 @@ public class OperatorLeave extends Operator {
         
         // Add preconditions
         pres.add(new PredicateUsedColsNum(PredicateUsedColsNum.N_UNDEFINED));
-        pres.add(new PredicateFreeStack());
         pres.add(new PredicatePickedUp(a));
+        pres.add(new PredicateFreeStack());
         
         // Add deletions
         rmvs.add(new PredicatePickedUp(a));
@@ -80,7 +80,7 @@ public class OperatorLeave extends Operator {
         // Select value
         // *******************************
         
-        val = instanceA.remove(0);
+        val = instanceA.remove(rnd.nextInt(instanceA.size()));
         setA(val);
     }
     
@@ -97,12 +97,12 @@ public class OperatorLeave extends Operator {
     
     @Override
     public String toString(){
-        Block a = this.pres.get(2).getA();
+        Block a = this.pres.get(1).getA();
         return "leave(" + (a == null ? "undef" : a.getName()) + ")";
     }
     
     private void setA(Block val){
-        pres.get(2).setA(val);
+        pres.get(1).setA(val);
         rmvs.get(0).setA(val);
         adds.get(0).setA(val);
     }

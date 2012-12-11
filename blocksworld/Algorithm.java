@@ -18,6 +18,7 @@ public class Algorithm {
     private ArrayList<Operator>  operators;   // List of operators applied
     private ArrayList<Object>    stack;       // Stack of the algorithm
     private ArrayList<Predicate> solve_stack; // Stack of preconditions being solved
+    private ArrayList<State>     prev_states; // States of the previous algorithm
     
     private State init_state;                 // Initial state
     private State goal_state;                 // Goal state
@@ -33,6 +34,7 @@ public class Algorithm {
         this.operators = new ArrayList<Operator>();
         this.stack = new ArrayList<Object>();
         this.solve_stack = new ArrayList<Predicate>();
+        this.prev_states = new ArrayList<State>();
     }
     
     // * ** CONTROL METHODS
@@ -56,7 +58,7 @@ public class Algorithm {
     }
     
     // Execute a partial problem
-    public void run(State initial, Operator op, ArrayList<Predicate> solve_stack){
+    public void run(State initial, Operator op, ArrayList<Predicate> solve_stack, ArrayList<State> prev_states){
         this.init_state = initial;
         this.goal_state = null;
         
@@ -68,6 +70,7 @@ public class Algorithm {
         this.stack.addAll(op.getPreconditions().getPredicates());
         
         this.solve_stack = solve_stack;
+        this.prev_states = prev_states;
         
         execute();
     }
@@ -97,9 +100,15 @@ public class Algorithm {
     }
     
     public void clear(){
+        this.init_state = null;
+        this.goal_state = null;
+        this.is_valid = true;
+        
         this.states.clear();
         this.operators.clear();
         this.stack.clear();
+        this.solve_stack.clear();
+        this.prev_states.clear();
     }
 
     // * ** ALGORITHM
@@ -114,6 +123,13 @@ public class Algorithm {
                 // Update current state
                 System.out.println("Applying operator: " + c.toString());
                 this.curr_state = new State(this.curr_state, (Operator)c);
+                
+                // If new state already visited, return
+                if(isStateVisited(this.curr_state)){
+                    System.out.println("OUCH!");
+                    this.is_valid = false;
+                    return;
+                }
                 
                 // Add new state & operator to plan
                 this.states.add(this.curr_state);
@@ -131,13 +147,7 @@ public class Algorithm {
                 System.out.println("Actual state:" +this.curr_state.toString());
                 System.out.println("Checking condition: " + c);
                 Predicate pred = (Predicate)c;
-                if(!this.curr_state.hasPredicate(pred)){
-                    // If predicate already being solved, we're in a loop!
-                    if(isPredicateBeingSolved(pred)){
-                        this.is_valid = false;
-                        return;
-                    }
-                    
+                if(!this.curr_state.hasPredicate(pred)){                    
                     //Add predicate to list of predicates being solved
                     this.solve_stack.add(pred);
                     
@@ -145,12 +155,17 @@ public class Algorithm {
                     boolean found = false;
                     ArrayList<Operator> ops = heuristicSelectOperators(pred);
                     for(Operator op: ops){
+                        if(found) break;
+                        
                         Algorithm alg;
                         
                         do{
                             System.out.println("Adding new operator to the stack: " + op);
                             alg = new Algorithm();
-                            alg.run(this.curr_state, op, this.solve_stack);
+                            ArrayList<State> pstates = new ArrayList<State>();
+                            pstates.addAll(this.prev_states);
+                            pstates.addAll(this.states);
+                            alg.run(this.curr_state, op, this.solve_stack, pstates);
                             if(alg.isValid()){
                                 ArrayList<State> tstates       = alg.getStates();
                                 ArrayList<Operator> toperators = alg.getOperators();
@@ -158,14 +173,14 @@ public class Algorithm {
 
                                 this.states.addAll(tstates);
                                 this.operators.addAll(toperators);
-                                System.out.println("Curren plan: "+this.operators);
-                                System.out.println("Operators added to plan: "+toperators);
+                                System.out.println("Curren plan: " + this.operators);
+                                System.out.println("Operators added to plan: " + toperators);
                                 this.curr_state = this.states.get(this.states.size()-1);
 
                                 found = true;
                                 break;
                             }else{
-                                System.out.println("Operator discarted: "+op.toString());
+                                System.out.println("Operator discarted: " + op.toString());
                             }
                         }while(!alg.isValid() && op.hasInstancesLeft());
                     }
@@ -212,6 +227,7 @@ public class Algorithm {
     private ArrayList<Operator> heuristicSelectOperators(Predicate pred){
         // TODO: Finish this heuristic
         ArrayList<Operator> op = new ArrayList<Operator>();
+        Predicate p;
         
         switch(pred.getType()){
             
@@ -223,8 +239,14 @@ public class Algorithm {
             // If free arm needed but is currently used
             case Predicate.FREE_ARM:
                 Predicate tp = this.curr_state.getPredicate(Predicate.PICKED_UP);
-                op.add(new OperatorLeave(tp.getA()));
-                op.add(new OperatorStack(tp.getA(), null));
+                p = this.goal_state.matchPredicate(new PredicateOnTable(tp.getA()));
+                if(p != null){
+                    op.add(new OperatorLeave(tp.getA()));
+                    //op.add(new OperatorStack(tp.getA(), null));
+                }else{
+                    op.add(new OperatorStack(tp.getA(), null));
+                    //op.add(new OperatorLeave(tp.getA()));
+                }
                 break;
                 
             // If free stack needed but 3 already used
@@ -244,8 +266,14 @@ public class Algorithm {
                 
             // If a block must be picked up
             case Predicate.PICKED_UP:
-                op.add(new OperatorPickUp(pred.getA()));
-                op.add(new OperatorUnstack(pred.getA(), null));
+                p = this.curr_state.matchPredicate(new PredicateOnTable(pred.getA()));
+                if(p != null){
+                    op.add(new OperatorPickUp(pred.getA()));
+                    op.add(new OperatorUnstack(pred.getA(), null));
+                }else{
+                    op.add(new OperatorUnstack(pred.getA(), null));
+                    op.add(new OperatorPickUp(pred.getA()));
+                }
                 break;
         }
         
@@ -257,6 +285,10 @@ public class Algorithm {
     
     private boolean isStateVisited(State s){
         for(State ts: this.states){
+            if(ts.equals(s)) return true;
+        }
+        
+        for(State ts: this.prev_states){
             if(ts.equals(s)) return true;
         }
         

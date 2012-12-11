@@ -77,7 +77,7 @@ public class OperatorPickUp extends Operator {
         // Select value
         // *******************************
         
-        val = instanceA.remove(0);
+        val = instanceA.remove(rnd.nextInt(instanceA.size()));
         setA(val);
     }
     

@@ -86,7 +86,7 @@ public class OperatorUnstack extends Operator {
         // Select value
         // *******************************
         
-        val = instanceA.remove(0);
+        val = instanceA.remove(rnd.nextInt(instanceA.size()));
         setA(val);
         
     }
@@ -115,7 +115,7 @@ public class OperatorUnstack extends Operator {
         // Select value
         // *******************************
         
-        val = instanceB.remove(0);
+        val = instanceB.remove(rnd.nextInt(instanceB.size()));
         setB(val);
     }
     
