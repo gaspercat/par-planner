@@ -110,7 +110,7 @@ public class PredicatePickedUp extends Predicate{
     public int compareTo(Object obj){
         if(obj instanceof PredicateOnTable || obj instanceof PredicateOn || obj instanceof PredicateHeavier || obj instanceof PredicateFree){
             return 1;
-        }else if(obj instanceof PredicateFree){
+        }else if(obj instanceof PredicatePickedUp){
             return 0;
         }else{
             return -1;

@@ -127,7 +127,7 @@ public class PredicateOn extends Predicate{
     public int compareTo(Object obj){
         if(obj instanceof PredicateOnTable || obj instanceof PredicateHeavier){
             return 1;
-        }else if(obj instanceof PredicateFree){
+        }else if(obj instanceof PredicateOn){
             return 0;
         }else{
             return -1;

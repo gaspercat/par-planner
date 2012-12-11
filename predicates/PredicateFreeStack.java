@@ -90,7 +90,7 @@ public class PredicateFreeStack extends Predicate{
     public int compareTo(Object obj){
         if(obj instanceof PredicateUsedColsNum || obj instanceof PredicateFreeArm){
             return -1;
-        }else if(obj instanceof PredicateFree){
+        }else if(obj instanceof PredicateFreeStack){
             return 0;
         }else{
             return 1;

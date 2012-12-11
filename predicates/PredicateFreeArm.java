@@ -89,7 +89,7 @@ public class PredicateFreeArm extends Predicate{
     public int compareTo(Object obj){
         if(obj instanceof PredicateUsedColsNum){
             return -1;
-        }else if(obj instanceof PredicateFree){
+        }else if(obj instanceof PredicateFreeArm){
             return 0;
         }else{
             return 1;

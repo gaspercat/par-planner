@@ -116,7 +116,7 @@ public class PredicateUsedColsNum extends Predicate{
     
     @Override
     public int compareTo(Object obj){
-        if(obj instanceof PredicateFree){
+        if(obj instanceof PredicateUsedColsNum){
             return 0;
         }else{
             return 1;
