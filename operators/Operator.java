@@ -16,7 +16,7 @@ import predicates.Predicate;
  * @author gaspercat
  */
 public abstract class Operator {
-    protected static Random rnd = new Random();
+    protected static Random rnd = new Random(12);
     
     public static final int PICK_UP = 1;
     public static final int LEAVE = 2;

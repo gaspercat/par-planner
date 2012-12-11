@@ -100,7 +100,6 @@ public class OperatorStack extends Operator {
         
         if(instanceB == null){
             instanceB = new ArrayList<Block>();
-            instanceB.addAll(state.getAllBlocks());
             
             Block a = pres.get(0).getA();
             if(a != null){
@@ -110,13 +109,15 @@ public class OperatorStack extends Operator {
                 // Remove elements lighter than a
                 ArrayList<Predicate> preds = state.matchPredicates(new PredicateHeavier(a, null));
                 for(Predicate p: preds) instanceB.remove(p.getB());
+            }else{
+                instanceB.addAll(state.getAllBlocks());
             }
         }
         
         // Select value
         // *******************************
         
-        val = instanceB.remove(rnd.nextInt(instanceB.size()));
+        val = instanceB.get(rnd.nextInt(instanceB.size()));
         setB(val);
     }
     
