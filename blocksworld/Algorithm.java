@@ -113,6 +113,8 @@ public class Algorithm {
                 // Add new state & operator to plan
                 this.states.add(this.curr_state);
                 this.operators.add((Operator)c);
+                System.out.println("CURRENT PLAN: "+this.operators);
+                System.out.println("CURRENT STATE: "+this.curr_state);
                 
                 
             // If c is a condition not fully instanced
