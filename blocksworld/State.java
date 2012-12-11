@@ -173,15 +173,15 @@ public class State {
             }
 
             // Remove used columns predicate if present
-            for(Predicate tp: this.preds){
+            for(Predicate tp: ret){
                 if(tp.getType() == Predicate.USED_COLS_NUM){
-                    this.preds.remove(tp);
+                    ret.remove(tp);
                     break;
                 }
             }
 
             // Add new UsedColsNum
-            this.preds.add(0, new PredicateUsedColsNum(nCols));
+            ret.add(0, new PredicateUsedColsNum(nCols));
         }
         
         this.preds = ret;
