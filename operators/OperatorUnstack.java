@@ -78,8 +78,14 @@ public class OperatorUnstack extends Operator {
                 instanceA.add(p.getA());
             }else{
                 ArrayList<Block> blocks = state.getAllBlocks();
-                if(b != null) blocks.remove(b);
                 instanceA.addAll(blocks);
+                
+                if(b != null){
+                    instanceA.remove(b);
+                    
+                    ArrayList<Predicate> pl = state.matchPredicates(new PredicateHeavier(null, b));
+                    for(Predicate tp: pl) instanceA.remove(tp.getA());
+                }
             }
         }
         
@@ -107,8 +113,14 @@ public class OperatorUnstack extends Operator {
                 instanceB.add(p.getB());
             }else{
                 ArrayList<Block> blocks = state.getAllBlocks();
-                if(a != null) blocks.remove(a);
                 instanceB.addAll(blocks);
+                
+                if(a != null){
+                    instanceB.remove(a);
+                    
+                    ArrayList<Predicate> pl = state.matchPredicates(new PredicateHeavier(a, null));
+                    for(Predicate tp: pl) instanceB.remove(tp.getB());
+                }
             }
         }
         

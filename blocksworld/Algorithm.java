@@ -132,6 +132,7 @@ public class Algorithm {
                     Operator op = heuristicSelectOperator(pred);
                     System.out.println("Adding new operator to the stack: " + op);
                     this.stack.add(op);
+                    
                     this.stack.add(op.getPreconditions());
                     this.stack.addAll(op.getPreconditions().getPredicates());
                 }
