@@ -168,7 +168,7 @@ public class State {
         if(setColsNum){
             // Count number of used columns
             int nCols = 0;
-            for(Predicate tp: this.preds){
+            for(Predicate tp: ret){
                 if(tp.getType() == Predicate.ON_TABLE) nCols++;
             }
 

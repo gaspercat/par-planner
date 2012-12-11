@@ -83,7 +83,7 @@ public class PredicateFreeStack extends Predicate{
     
     @Override
     public String toString(){
-        return this.getType() + "()";
+        return this.getTypeName() + "()";
     }
     
     @Override
