@@ -130,6 +130,9 @@ public class Algorithm {
                 Predicate pred = (Predicate)c;
                 if(!this.curr_state.hasPredicate(pred)){                    
                     Operator op = heuristicSelectOperator(pred);
+                    if(op == null){
+                        return;
+                    }
                     System.out.println("Adding new operator to the stack: " + op);
                     this.stack.add(op);
                     

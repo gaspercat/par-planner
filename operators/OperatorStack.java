@@ -24,9 +24,9 @@ public class OperatorStack extends Operator {
         super(Operator.STACK);
 
         // Add preconditions
+        pres.add(new PredicateHeavier(b, a));
         pres.add(new PredicatePickedUp(a));
         pres.add(new PredicateFree(b));
-        pres.add(new PredicateHeavier(b, a));
         
         // Add deletions
         rmvs.add(new PredicatePickedUp(a));
@@ -41,9 +41,9 @@ public class OperatorStack extends Operator {
         super(Operator.STACK);
 
         // Add preconditions
+        pres.add(new PredicateHeavier(b, a));
         pres.add(new PredicatePickedUp(a));
         pres.add(new PredicateFree(b));
-        pres.add(new PredicateHeavier(b, a));
         
         // Add deletions
         rmvs.add(new PredicatePickedUp(a));
@@ -64,12 +64,12 @@ public class OperatorStack extends Operator {
     
     @Override
     public Block getA(){
-        return pres.get(0).getA();
+        return pres.get(1).getA();
     }
     
     @Override
     public Block getB(){
-        return pres.get(1).getA();
+        return pres.get(2).getA();
     }
     
     @Override
@@ -107,7 +107,7 @@ public class OperatorStack extends Operator {
             instanceA = new ArrayList<Block>();
             instanceA.addAll(state.getAllBlocks());
             
-            Block b = pres.get(1).getA();
+            Block b = pres.get(2).getA();
             if(b != null){
                 // Remove a from possible options
                 instanceA.remove(b);
@@ -135,20 +135,30 @@ public class OperatorStack extends Operator {
         // *******************************
         
         if(instanceB == null){
-            instanceB = new ArrayList<Block>();
-            instanceB.addAll(state.getAllBlocks());
+            ArrayList<Predicate> preds;
             
-            Block a = pres.get(0).getA();
+            instanceB = new ArrayList<Block>();
+            preds = state.matchPredicates(new PredicateFree(null));
+            for(Predicate tp: preds) instanceB.add(tp.getA());
+            //instanceB.addAll(state.getAllBlocks());
+            
+            Block a = pres.get(1).getA();
             if(a != null){
                 // Remove a from possible options
                 instanceB.remove(a);  
                 
                 // Remove elements lighter than a
-                ArrayList<Predicate> preds = state.matchPredicates(new PredicateHeavier(a, null));
+                preds = state.matchPredicates(new PredicateHeavier(a, null));
                 for(Predicate p: preds) instanceB.remove(p.getB());
                 
                 // Remove blacklisted elements
                 instanceB.removeAll(this.blacklistB);
+                
+                // If no element left, add elements heavier (even the ones not on top)
+                if(instanceB.isEmpty()){
+                    preds = state.matchPredicates(new PredicateHeavier(null, a));
+                    for(Predicate p: preds) instanceB.add(p.getA());
+                }
             }
         }
         
@@ -167,22 +177,22 @@ public class OperatorStack extends Operator {
     
     @Override
     public String toString(){
-        Block a = this.pres.get(0).getA();
-        Block b = this.pres.get(1).getA();
+        Block a = this.pres.get(1).getA();
+        Block b = this.pres.get(2).getA();
         return "stack(" + (a != null ? a.getName() : "undef") + ", " + (b != null ? b.getName() : "undef") + ")";
 
     }
     
     private void setA(Block val){
-        pres.get(0).setA(val);
-        pres.get(2).setB(val);
+        pres.get(1).setA(val);
+        pres.get(0).setB(val);
         rmvs.get(0).setA(val);
         adds.get(0).setA(val);
     }
     
     private void setB(Block val){
-        pres.get(1).setA(val);
         pres.get(2).setA(val);
+        pres.get(0).setA(val);
         rmvs.get(1).setA(val);
         adds.get(0).setB(val);
     }

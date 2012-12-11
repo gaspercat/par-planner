@@ -188,16 +188,18 @@ public class State {
     }
     
     private Predicate removeHeaviestOnTable(){
-        Predicate ret = null;
-        
         ArrayList<Predicate> ont = this.matchPredicates(new PredicateOnTable(null));
+        if(ont.isEmpty()) return null;
+        
+        Predicate ret = ont.remove(0);
         for(Predicate on: ont){
-            if(this.matchPredicate(new PredicateHeavier(null, on.getA())) == null){
-                this.preds.remove(on);
+            if(this.matchPredicate(new PredicateHeavier(on.getA(), ret.getA())) != null){
                 ret = on;
+                break;
             }
         }
         
+        this.preds.remove(ret);
         return ret;
     }
     
