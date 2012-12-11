@@ -5,6 +5,7 @@
 package blocksworld;
 
 import java.util.ArrayList;
+import java.util.Random;
 import operators.*;
 import predicates.*;
 import predicates.PredicateUsedColsNum;
@@ -14,6 +15,8 @@ import predicates.PredicateUsedColsNum;
  * @author gaspercat
  */
 public class Algorithm {
+    Random rnd = new Random(11);
+    
     private ArrayList<State>     states;      // List of states transited
     private ArrayList<Operator>  operators;   // List of operators applied
     private ArrayList<Object>    stack;       // Stack of the algorithm
@@ -172,8 +175,11 @@ public class Algorithm {
             // If free arm needed but is currently used
             case Predicate.FREE_ARM:
                 Predicate tp = this.curr_state.getPredicate(Predicate.PICKED_UP);
-                p = this.goal_state.matchPredicate(new PredicateOnTable(tp.getA()));
-                if(p != null){
+                //p = this.goal_state.matchPredicate(new PredicateOnTable(tp.getA()));
+                //if(p != null){
+                
+                p = this.curr_state.matchPredicate(new PredicateHeavier(null, tp.getA()));
+                if(p==null || rnd.nextInt(10)<5){
                     return new OperatorLeave(tp.getA());
                     //op.add(new OperatorStack(tp.getA(), null));
                 }else{
@@ -195,14 +201,18 @@ public class Algorithm {
                 
             // If a block must be picked up
             case Predicate.PICKED_UP:
-                p = this.curr_state.matchPredicate(new PredicateOnTable(pred.getA()));
-                if(p != null){
+                //p = this.curr_state.matchPredicate(new PredicateOnTable(pred.getA()));
+                //if(p != null){
+                if(rnd.nextInt(10)<5){
                     return new OperatorPickUp(pred.getA());
                     //op.add(new OperatorUnstack(pred.getA(), null));
                 }else{
                     return new OperatorUnstack(pred.getA(), null);
                     //op.add(new OperatorPickUp(pred.getA()));
                 }
+        
+            case Predicate.USED_COLS_NUM:
+                return new OperatorPickUp((Block)null);
         }
         
         return null;
