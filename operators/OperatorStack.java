@@ -98,7 +98,7 @@ public class OperatorStack extends Operator {
     }
     
     private void instanceA(State state){
-        Block val;
+        Block val = null;
         
         // Instance values
         // *******************************
@@ -108,6 +108,13 @@ public class OperatorStack extends Operator {
             instanceA.addAll(state.getAllBlocks());
             
             Block b = pres.get(2).getA();
+            
+            // Select element on arm if possible
+            Predicate tp = state.matchPredicate(new PredicatePickedUp(null));
+            if(tp != null && (b == null || b != tp.getA())){
+                val = tp.getA();
+            }
+            
             if(b != null){
                 // Remove a from possible options
                 instanceA.remove(b);
@@ -117,14 +124,14 @@ public class OperatorStack extends Operator {
                 for(Predicate p: preds) instanceA.remove(p.getA());
                 
                 // Remove blacklisted elements
-                instanceA.removeAll(this.blacklistA);
+                if(this.blacklistA != null) instanceA.removeAll(this.blacklistA);
             }
         }
         
         // Select value
         // *******************************
         
-        val = instanceA.get(rnd.nextInt(instanceA.size()));
+        if(val == null) val = instanceA.get(rnd.nextInt(instanceA.size()));
         setA(val);
     }
     

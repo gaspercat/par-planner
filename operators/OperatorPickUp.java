@@ -72,7 +72,7 @@ public class OperatorPickUp extends Operator {
     }
     
     private void instanceA(State state){
-        Block val;
+        Block val = null;
         
         // Initialize values
         // *******************************
@@ -90,13 +90,18 @@ public class OperatorPickUp extends Operator {
                 
                 // Add on-table element to value options
                 instanceA.add(p.getA());
+                if(state.matchPredicate(new PredicateFree(p.getA())) != null){
+                    if(val == null || state.matchPredicate(new PredicateHeavier(val, p.getA())) != null){
+                        val = p.getA();
+                    }
+                }
             }
         }
         
         // Select value
         // *******************************
         
-        val = instanceA.get(rnd.nextInt(instanceA.size()));
+        if(val == null) val = instanceA.get(rnd.nextInt(instanceA.size()));
         setA(val);
     }
     

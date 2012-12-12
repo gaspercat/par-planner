@@ -128,13 +128,17 @@ public class Algorithm {
                 System.out.println("Checking condition: " + c);
                 Predicate pred = (Predicate)c;
                 if(!this.curr_state.hasPredicate(pred)){                    
-                    Operator op = heuristicSelectOperator(pred);
+                    ArrayList<Operator> ops = heuristicSelectOperator(pred);
+                    if(ops == null){
+                        return;
+                    }
+                    for(Operator op: ops){
+                        System.out.println("Adding new operator to the stack: " + op);
+                        this.stack.add(op);
 
-                    System.out.println("Adding new operator to the stack: " + op);
-                    this.stack.add(op);
-                    
-                    this.stack.add(op.getPreconditions());
-                    this.stack.addAll(op.getPreconditions().getPredicates());
+                        this.stack.add(op.getPreconditions());
+                        this.stack.addAll(op.getPreconditions().getPredicates());
+                    }
                 }
                 
             // If c is a list of conditions
@@ -166,7 +170,8 @@ public class Algorithm {
         op.instanceValues(pred, this.curr_state, this.goal_state);
     }
     
-    private Operator heuristicSelectOperator(Predicate pred){
+    private ArrayList<Operator> heuristicSelectOperator(Predicate pred){
+        ArrayList<Operator> ret = new ArrayList<Operator>();
         ArrayList<Block> bl = new ArrayList<Block>();
         Predicate p;
         
@@ -174,12 +179,14 @@ public class Algorithm {
             
             // If piece must be free but it isn't
             case Predicate.FREE:
-                return new OperatorUnstack((Block)null, pred.getA());
+                ret.add(new OperatorUnstack((Block)null, pred.getA()));
+                return ret;
                 
             // If free arm needed but is currently used
             case Predicate.FREE_ARM:
                 if(this.curr_state.getNumColumns() < 3){
-                    return new OperatorLeave(this.curr_state.getPredicate(Predicate.PICKED_UP).getA());
+                    ret.add(new OperatorLeave(this.curr_state.getPredicate(Predicate.PICKED_UP).getA()));
+                    return ret;
                 }else{
                     Predicate tp = this.curr_state.getPredicate(Predicate.PICKED_UP);
                     //p = this.goal_state.matchPredicate(new PredicateOnTable(tp.getA()));
@@ -190,7 +197,8 @@ public class Algorithm {
                         
                         // If block was picked up, make a stack
                         if(prev_op.getType() == Operator.PICK_UP){
-                            return new OperatorStack(tp.getA(), null);
+                            ret.add(new OperatorStack(tp.getA(), null));
+                            return ret;
                         
                         // If block was unstacked, blacklist origin stack
                         }else if(prev_op.getType() == Operator.UNSTACK){
@@ -201,25 +209,31 @@ public class Algorithm {
 
                     p = this.curr_state.matchPredicate(new PredicateHeavier(null, tp.getA()));
                     if(p==null || rnd.nextInt(10)<5){
-                        return new OperatorLeave(tp.getA());
+                        ret.add(new OperatorLeave(tp.getA()));
+                        return ret;
                         //op.add(new OperatorStack(tp.getA(), null));
                     }else{
-                        return new OperatorStack(tp.getA(), null, null, bl);
+                        ret.add(new OperatorStack(tp.getA(), null, null, bl));
+                        return ret;
                         //op.add(new OperatorLeave(tp.getA()));
                     }
                 }
                 
             // If free stack needed but 3 already used
             case Predicate.FREE_STACK:
-                return new OperatorPickUp((Block)null);
+                ret.add(new OperatorStack((Block)null, (Block)null));
+                ret.add(new OperatorPickUp((Block)null));
+                return ret;
                 
             // If a block must be over another
             case Predicate.ON:
-                return new OperatorStack(pred.getA(), pred.getB());
+                ret.add(new OperatorStack(pred.getA(), pred.getB()));
+                return ret;
                 
             // If a block must be on the table
             case Predicate.ON_TABLE:
-                return new OperatorLeave(pred.getA());
+                ret.add(new OperatorLeave(pred.getA()));
+                return ret;
                 
             // If a block must be picked up
             case Predicate.PICKED_UP:
@@ -227,15 +241,18 @@ public class Algorithm {
                 if(p != null){
                 
                 //if(rnd.nextInt(10)<5){
-                    return new OperatorPickUp(pred.getA());
+                    ret.add(new OperatorPickUp(pred.getA()));
+                    return ret;
                     //op.add(new OperatorUnstack(pred.getA(), null));
                 }else{
-                    return new OperatorUnstack(pred.getA(), null);
+                    ret.add(new OperatorUnstack(pred.getA(), null));
+                    return ret;
                     //op.add(new OperatorPickUp(pred.getA()));
                 }
         
             case Predicate.USED_COLS_NUM:
-                return new OperatorPickUp((Block)null);
+                ret.add(new OperatorPickUp((Block)null));
+                return ret;
         }
         
         return null;
