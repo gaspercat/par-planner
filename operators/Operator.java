@@ -99,4 +99,5 @@ public abstract class Operator {
     
     @Override
     public abstract String toString();
+    
 }

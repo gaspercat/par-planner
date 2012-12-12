@@ -129,9 +129,7 @@ public class Algorithm {
                 Predicate pred = (Predicate)c;
                 if(!this.curr_state.hasPredicate(pred)){                    
                     Operator op = heuristicSelectOperator(pred);
-                    if(op == null){
-                        return;
-                    }
+
                     System.out.println("Adding new operator to the stack: " + op);
                     this.stack.add(op);
                     
@@ -169,6 +167,7 @@ public class Algorithm {
     }
     
     private Operator heuristicSelectOperator(Predicate pred){
+        ArrayList<Block> bl = new ArrayList<Block>();
         Predicate p;
         
         switch(pred.getType()){
@@ -186,15 +185,19 @@ public class Algorithm {
                     //p = this.goal_state.matchPredicate(new PredicateOnTable(tp.getA()));
                     //if(p != null){
 
-                    // If block was picked up, make a stack
-                    Operator prev_op = this.operators.get(this.operators.size()-1);
-                    if(prev_op.getType() == Operator.PICK_UP){
-                        return new OperatorStack(tp.getA(), null);
+                    if(!this.operators.isEmpty()){
+                        Operator prev_op = this.operators.get(this.operators.size()-1);
+                        
+                        // If block was picked up, make a stack
+                        if(prev_op.getType() == Operator.PICK_UP){
+                            return new OperatorStack(tp.getA(), null);
+                        
+                        // If block was unstacked, blacklist origin stack
+                        }else if(prev_op.getType() == Operator.UNSTACK){
+                            bl.add(prev_op.getB());
+                            
+                        }
                     }
-
-                    // If block was unstacked, blacklist origin stack
-                    ArrayList<Block> bl = new ArrayList<Block>();
-                    bl.add(prev_op.getB());
 
                     p = this.curr_state.matchPredicate(new PredicateHeavier(null, tp.getA()));
                     if(p==null || rnd.nextInt(10)<5){
@@ -247,5 +250,16 @@ public class Algorithm {
         }
         
         return false;
+    }
+    
+    private Operator getStackedOperator(int n){
+        for(int i=this.stack.size()-1;i>=0;i--){
+            if(this.stack.get(i) instanceof Operator){
+                if(n == 0) return (Operator)this.stack.get(i);
+                n--;
+            }
+        }
+        
+        return null;
     }
 }
