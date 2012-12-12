@@ -61,7 +61,7 @@ public class OperatorPickUp extends Operator {
     }
     
     @Override
-    public void instanceValues(Predicate pred, State state){
+    public void instanceValues(Predicate pred, State state, State goalState){
         if(pred instanceof PredicateOnTable){
             instanceA(state);
         }else if(pred instanceof PredicateFree){

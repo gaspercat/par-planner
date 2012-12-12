@@ -62,7 +62,7 @@ public class OperatorUnstack extends Operator {
     }
     
     @Override
-    public void instanceValues(Predicate pred, State state){
+    public void instanceValues(Predicate pred, State state, State goalState){
         if(pred instanceof PredicateOn){
             PredicateOn p = (PredicateOn)pred;
             if(!p.isInstancedA()) instanceA(state);

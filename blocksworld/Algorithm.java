@@ -163,7 +163,7 @@ public class Algorithm {
         }
         
         // Define value at operator
-        op.instanceValues(pred, this.curr_state);
+        op.instanceValues(pred, this.curr_state, this.goal_state);
     }
     
     private Operator heuristicSelectOperator(Predicate pred){

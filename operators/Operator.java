@@ -94,7 +94,7 @@ public abstract class Operator {
     // * ******************************************
     
     public abstract boolean canBeInstanced();
-    public abstract void instanceValues(Predicate pred, State state);
+    public abstract void instanceValues(Predicate pred, State state, State goalState);
     public abstract Operator clone();
     
     @Override

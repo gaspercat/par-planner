@@ -85,7 +85,7 @@ public class OperatorStack extends Operator {
     }
     
     @Override
-    public void instanceValues(Predicate pred, State state){
+    public void instanceValues(Predicate pred, State state, State goalState){
         if(pred instanceof PredicatePickedUp){
             instanceA(state);
         }else if(pred instanceof PredicateFree){
