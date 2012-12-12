@@ -124,7 +124,7 @@ public class OperatorStack extends Operator {
         // Select value
         // *******************************
         
-        val = instanceA.remove(rnd.nextInt(instanceA.size()));
+        val = instanceA.get(rnd.nextInt(instanceA.size()));
         setA(val);
     }
     
