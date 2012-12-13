@@ -21,24 +21,28 @@ public class Blocksworld {
     private static State state_goal;
     
     public static void main(String[] args) {
-        // Initialize blocks list
-        blocks = new ArrayList<Block>();
-        
-        // Create initial and final states
-        state_initial = new State();
-        state_goal = new State();
-        
         // Load initial state of the algorithm
         if(args.length == 0){
-            System.out.println();
+            System.out.println("Syntax: blocksworld file1 [file2 [file3 ..]]");
         }else if(args.length > 0){
             for(String arg: args){
+                // Create blocks list, initial and final states
+                blocks = new ArrayList<Block>();
+                state_initial = new State();
+                state_goal = new State();
+                
+                // Show problem header
+                System.out.println("\n\n-------------------------------------------------");
+                System.out.println("-- EXECUTING '" + arg + "'" );
+                System.out.println("-------------------------------------------------\n");
+        
+                // Parse file
                 if(!parse_file(arg)) return;
+                
+                // Launch algorithm
+                execute(state_initial, state_goal);
             }
         }
-        
-        // Launch algorithm
-        execute(state_initial, state_goal);
     }
     
     private static void execute(State initial, State goal){
@@ -46,10 +50,14 @@ public class Blocksworld {
         alg.run(initial, goal);
         
         // Show result
+        System.out.println("");
         System.out.println("Result of the planning:");
         ArrayList<Operator> plan = alg.getOperators();
+        
+        int i=1;
         for(Operator op: plan){
-            System.out.println(op.toString());
+            System.out.println(i + ".\t" + op.toString());
+            i++;
         }
     }
     

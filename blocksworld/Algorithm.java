@@ -100,6 +100,7 @@ public class Algorithm {
             // If c is an operator
             if(c instanceof Operator){
                 // Update current state
+                System.out.println("-------------------------------------------------");
                 System.out.println("Applying operator: " + c.toString());
                 this.curr_state = new State(this.curr_state, (Operator)c);
                 
@@ -133,6 +134,7 @@ public class Algorithm {
                         return;
                     }
                     for(Operator op: ops){
+                        System.out.println("-------------------------------------------------");
                         System.out.println("Adding new operator to the stack: " + op);
                         this.stack.add(op);
 

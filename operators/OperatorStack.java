@@ -87,17 +87,17 @@ public class OperatorStack extends Operator {
     @Override
     public void instanceValues(Predicate pred, State state, State goalState){
         if(pred instanceof PredicatePickedUp){
-            instanceA(state);
+            instanceA(state, goalState);
         }else if(pred instanceof PredicateFree){
-            instanceB(state);
+            instanceB(state, goalState);
         }else if(pred instanceof PredicateHeavier){
             PredicateHeavier p = (PredicateHeavier)pred;
-            if(!p.isInstancedA()) instanceB(state);
-            if(!p.isInstancedB()) instanceA(state);
+            if(!p.isInstancedA()) instanceB(state, goalState);
+            if(!p.isInstancedB()) instanceA(state, goalState);
         }
     }
     
-    private void instanceA(State state){
+    private void instanceA(State state, State goal){
         Block val = null;
         
         // Instance values
@@ -135,8 +135,8 @@ public class OperatorStack extends Operator {
         setA(val);
     }
     
-    private void instanceB(State state){
-        Block val;
+    private void instanceB(State state, State goal){
+        Block val = null;
         
         // Instance values
         // *******************************
@@ -144,27 +144,68 @@ public class OperatorStack extends Operator {
         if(instanceB == null){
             ArrayList<Predicate> preds;
             
+            // Read value of A
+            Block a = pres.get(1).getA();
+            if(a == null){
+                Predicate pred = state.matchPredicate(new PredicatePickedUp(null));
+                this.setA(pred.getA());
+                if(pred != null) a = pred.getA();
+            }
+            
             instanceB = new ArrayList<Block>();
             preds = state.matchPredicates(new PredicateFree(null));
             for(Predicate tp: preds) instanceB.add(tp.getA());
             //instanceB.addAll(state.getAllBlocks());
             
-            Block a = pres.get(1).getA();
+            // Remove element on hand (if any)
+            Predicate pred = state.matchPredicate(new PredicatePickedUp(null));
+            if(pred != null){
+                instanceB.remove(pred.getA());
+            }
+            
             if(a != null){
                 // Remove a from possible options
-                instanceB.remove(a);  
+                instanceB.remove(a);
                 
                 // Remove elements lighter than a
                 preds = state.matchPredicates(new PredicateHeavier(a, null));
                 for(Predicate p: preds) instanceB.remove(p.getB());
                 
                 // Remove blacklisted elements
-                instanceB.removeAll(this.blacklistB);
+                if(this.blacklistB != null){
+                    instanceB.removeAll(this.blacklistB);
+                }
                 
                 // If no element left, add elements heavier (even the ones not on top)
                 if(instanceB.isEmpty()){
                     preds = state.matchPredicates(new PredicateHeavier(null, a));
                     for(Predicate p: preds) instanceB.add(p.getA());
+                }
+                
+                // If possible, stack to final position
+                if(canStackToFinalPosition(a, state, goal)){
+                    Predicate p = goal.matchPredicate(new PredicateOn(a, null));
+                    val = p.getB();
+                    
+                // If not, get lighter of all possibilities
+                }else{
+                    for(Block bl: instanceB){
+                        if(isStackComplete(bl, state, goal)){
+                            val = bl;
+                            break;
+                        }
+                    }
+                    
+                    if(val == null){
+                        int nHeavier = -1;
+                        for(Block bl: instanceB){
+                            int tHeavier = state.matchPredicates(new PredicateHeavier(null, bl)).size();
+                            if(tHeavier > nHeavier){
+                                nHeavier = tHeavier;
+                                val = bl;
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -172,7 +213,7 @@ public class OperatorStack extends Operator {
         // Select value
         // *******************************
         
-        val = instanceB.get(rnd.nextInt(instanceB.size()));
+        if(val == null) val = instanceB.get(rnd.nextInt(instanceB.size()));
         setB(val);
     }
     
@@ -202,5 +243,59 @@ public class OperatorStack extends Operator {
         pres.get(0).setA(val);
         rmvs.get(1).setA(val);
         adds.get(0).setB(val);
+    }
+    
+    private boolean canStackToFinalPosition(Block a, State current, State goal){
+        Block upper;
+        
+        // Check block is stacked (not on-table) in the final state
+        Predicate fp = goal.matchPredicate(new PredicateOn(a, null));
+        if(fp == null) return false;
+        
+        // If stack position isn't free, return false
+        upper = fp.getB();
+        if(current.matchPredicate(new PredicateFree(upper)) == null){
+            return false;
+        }
+        
+        // Check stack order is the same in both states
+        Predicate tp = goal.matchPredicate(new PredicateOn(upper, null));
+        while(tp != null){
+            if(current.matchPredicate(new PredicateOn(upper, null)) == null){
+                return false;
+            }
+            
+            upper = tp.getB();
+            tp = goal.matchPredicate(new PredicateOn(upper, null));
+        }
+        
+        return true;
+    }
+    
+     private boolean isStackComplete(Block a, State current, State goal){
+        Block upper = a;
+        
+        // If stack position is on hand, return false
+        if(current.matchPredicate(new PredicatePickedUp(upper)) != null){
+            return false;
+        }
+        
+        // If stack position isn't free, return false
+        if(goal.matchPredicate(new PredicateFree(upper)) == null){
+            return false;
+        }
+        
+        // Check stack order is the same in both states
+        Predicate tp = goal.matchPredicate(new PredicateOn(upper, null));
+        while(tp != null){
+            if(current.matchPredicate(new PredicateOn(upper, null)) == null){
+                return false;
+            }
+            
+            upper = tp.getB();
+            tp = goal.matchPredicate(new PredicateOn(upper, null));
+        }
+        
+        return true;
     }
 }
